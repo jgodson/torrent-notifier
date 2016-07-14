@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Torrent Notifier</title>
+    <link rel="stylesheet" href="../css/app.css">
+    <link rel="stylesheet" href="../css/font-awesome.min.css">
+  </head>
+  <body>
+  <div id='backdrop'>
+    <div id='changeContainer'>
+      <div>Title</div>
+      <div id='content'>Content</div>
+    </div>
+  </div>
+  <div id="wrapper">
+    <div id="side-nav">
+      <ul>
+        <li><a href="#" title="Show List" id="showList" class="nav"><i class="fa fa-list"></i></a></li>
+        <li><a href="#" title="Message Logs" id="home" class="nav"><i class="fa fa-desktop"></i></a></li>
+        <li><a href="#" title="Calendar" id="calendar" class="nav"><i class="fa fa-calendar"></i></a></li>
+        <li><a href="#" title="Settings" id="settings" class="nav"><i class="fa fa-cogs"></i></a></li>
+      </ul>
+      <div id="battery"></div>
+    </div>
+    <div id="top-bar">
+      <div id="title">Show List</div>
+      <div id='connection-info'>
+        <div><i class="fa fa-wifi"></i></div>
+        <div><i id="status" class="fa fa-circle-o-notch spinning"></i></div>
+      </div>
+    </div>
+    <div id="connection">
+      <span>Connection Status</span>
+      <i class="fa fa-thumbs-o-up"></i>
+    </div>
+    <div id="console">
+    </div>
+    <div id="main">
+    </div>
+  </div>
+</body>
+<script>
+  const $ = jQuery = require("jquery");
+  require('../js/app.js');
+  require('../js/interactions.js');
+  require('../js/utils.js');
+
+  // Any navigation related code is here
+  $('#side-nav a').on('click', function (e) {
+    navigate($(this).attr('id'));
+    $('#title').text($(this).attr('title'));
+  });
+
+  function navigate(page) {
+    if (page !== 'home') {
+      $('#console').hide();
+      $.get(`${__dirname}/${page}.html`, function(data) {
+        $('#main').html(data);
+        $('#main').show()
+      });
+    }
+    else {
+      $('#console').show();
+      $('#main').hide();
+    }
+  }
+
+  // Change the size of the Side Nav
+  function adjustHeight() {
+
+  }
+
+  // Show the show list as initial view
+  $(document).ready(navigate('showList'));
+</script>
+</html>

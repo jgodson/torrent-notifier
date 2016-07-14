@@ -1,0 +1,9 @@
+<div id="calendar-wrapper">
+</div>
+<script>
+var uiComp = require('../js/components.js');
+var t = require('../js/torrent-notifier.js');
+$(document).ready(function() {
+	$('#calendar-wrapper').append(uiComp.buildCalendar());
+});
+</script>

@@ -1,0 +1,497 @@
+html, body{
+  height: 100%;
+  width: 100%;
+  min-width: calc(800px - 71px);
+  min-height: calc(600px - 41px);
+}
+
+body {
+  font-family: "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+#backdrop {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 100000;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: none;
+}
+
+#connection {
+  z-index: 1000;
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 201px;
+  width: 300px;
+  background-color: #f5f5f5;
+}
+
+#connection span {
+  position: absolute;
+  top: 15px;
+  left: 80px;
+}
+
+#connection i {
+  position: relative;
+  top: 50px;
+  left: 100px;
+  font-size: 800%;
+}
+
+#side-nav {
+  text-align: center;
+  background-color: #000;
+  width: 71px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+#side-nav #battery {
+  position: fixed;
+  bottom: 0px;
+  left: 10px;
+  color: #555;
+}
+
+#side-nav #battery i {
+  position: relative;
+  font-size: 2.5rem;
+}
+
+#side-nav #battery div {
+  color: oldlace;
+  font-size: 14px;
+  right: 0px;
+  font-weight: 800;
+  bottom: 29px;
+  position: relative;
+  cursor: default;
+}
+
+#top-bar {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e5e5e5;
+  height: 40px;
+  position: fixed;
+  font-size: 150%;
+  left: 71px;
+  top: 0;
+  right: 0;
+  z-index: 1001;
+  min-width: 400px;
+}
+
+#title {
+  text-align: center;
+  position: relative;
+  top: 6px;
+}
+
+#connection-info {
+  width: 80px;
+  height: 40px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#top-bar i {
+   color: darkgrey;
+   top: 8px;
+   right: 15px;
+   position: absolute;
+}
+
+#top-bar > div > div > i.fa-wifi {
+  position: absolute;
+  right: 40px;
+}
+
+.spinning {
+  animation: spin 2s ease-out infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.ok {
+  color: green !important;
+}
+
+.error {
+  color: darkred !important;
+}
+
+#main {
+  min-width: 272px;
+  position: absolute;
+  left: 71px;
+  top: 40px;
+  bottom: 0;
+  right: 0;
+}
+
+#console {
+  display: none;
+  color: limegreen;
+  font-family: monospace;
+  padding-left: 36px;
+  padding-top: 18px;
+  min-width: 500px;
+  position: absolute;
+  left: 71px;
+  top: 40px;
+  bottom: 0;
+  right: 0;
+  overflow-y: auto;
+}
+
+#side-nav ul {
+  list-style: none;
+  padding: 19px;
+  margin: 0
+}
+
+#side-nav li {
+  padding-bottom: 8px;
+}
+
+#side-nav a {
+  font-size: 2rem;
+  color: #555
+}
+
+#side-nav a:hover {
+  color: cornflowerblue;
+}
+
+#wrapper {
+  height: 100%;
+  width: 100%;
+}
+
+#show-list {
+  height: calc(100% - 11px);
+  width: 100%;
+  overflow-y: auto;
+  margin: auto;
+  margin-top: 11px;
+}
+
+#show-list > p {
+  text-align: center;
+}
+
+.showListing {
+  width: 200px;
+  height: 300px;
+  float: left;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.showListing img {
+  height: 298px;
+  width: 198px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.showListing .info {
+  display: none;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  color: white;
+  width: 200px;
+  height: 300px;
+  position: relative;
+  top: -302px;
+}
+
+.showTitle {
+  text-align: center;
+}
+
+.infoButton {
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  position: absolute;
+  transition: all 250ms;
+  bottom: 20px;
+  cursor: pointer;
+}
+
+.infoButton:hover {
+  transform: scale(1.2, 1.2);
+  transition: all 250ms;
+}
+
+.infoButton > i {
+  position: relative;
+  color: black;
+  font-size: 30px;
+  left: 18px;
+  top: 14px;
+}
+
+.activeButton {
+  position: absolute;
+  bottom: 165px;
+  left: 25px;
+  transition: all 250ms;
+}
+
+.activeButton:hover {
+  transform: none;
+}
+
+.activeButton > i {
+  font-size: 120px;
+  color: grey;
+  transition: all 250ms;
+}
+
+.activeButton.active > i {
+  color: gold;
+}
+
+.activeButton > i:active {
+  transform: scale(1.4, 1.4);
+  transition: all 250ms;
+}
+
+.delete {
+  background-color: red;
+  right: 15px;
+}
+
+.edit {
+  background-color: orange;
+  left: 15px;
+}
+
+#calendar-wrapper {
+  margin: auto;
+  margin-top: 31px;
+  width: 700px;
+}
+
+.week {
+  width: 700px;
+  height: 100px;
+  margin: 0;
+  padding: 0;
+}
+
+.day {
+  width: 98px;
+  height: 98px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid black;
+  float: left;
+  transition: all 250ms;
+  overflow-y: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+}
+
+.day::-webkit-scrollbar { 
+    display: none;
+}
+
+.day:hover {
+  transform: scale(2.0, 2.0);
+  transition: all 250ms;
+}
+
+.blank {
+  width: 98px;
+  height: 98px;
+  border: 1px solid black;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+.day span {
+  padding-top: 2px;
+  padding-left: 2px;
+}
+
+.dayInfo {
+  width: 92px;
+  margin-left: 1px;
+  font-size: 10px;
+  text-align: center;
+  border-radius: 5px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.showOnDay {
+  margin-top: 2px;
+  background-color: cornflowerblue;
+}
+
+.showOnDay.open {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.showTimeOnDay {
+  background-color: cornflowerblue;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  display: none;
+}
+
+.today {
+  background-color: rgba(175, 255, 30, 0.9);
+}
+
+.labels {
+  height: 25px;
+  width : 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.labels div {
+  width: 98px;
+  height: 23px;
+  border: 1px solid black;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  float: left;
+}
+
+.labels div span {
+  vertical-align: middle;
+}
+
+#addShowButton {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  background-color: deepskyblue;
+  box-shadow: 10px 10px 5px #888888;
+  transition: all 500ms;
+  cursor: pointer;
+}
+
+#addShowButton i {
+  font-size: 50px;
+  position: relative;
+  top: 18px;
+  left: 20px;
+}
+
+#addShowButton:hover{
+  transform: scale(1.2, 1.2);
+  transition: all 500ms;
+}
+
+#monthName {
+  text-align: center;
+  font-size: 200%;
+  padding-bottom: 10px;
+  border: 1px solid black;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+/* ---- Settings Page ---- */
+#settings-wrapper {
+  margin-left: 36px;
+  margin-top: 18px;
+}
+
+/* ---- Setting window ---- */
+.setting {
+  float: left;
+  width: 200px;
+  height: 200px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: grey 8px 8px 8px;
+  margin-right: 15px;
+  margin-top: 15px;
+}
+
+.setting > .title {
+  text-align: center;
+  width: 100%;
+  height: 25px;
+  border-bottom: 1px solid grey;
+  background: linear-gradient(#EEE, #CCC);
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+
+.setting > .title > span {
+  vertical-align: middle;
+}
+
+.setting > .body {
+  text-align: center;
+  width: 100%;
+  height: 174px;
+  background-color: #EEE
+}
+
+/* ---- On/Off Button ---- */
+.on-off-button + label {
+  position: relative;
+  background-color: red;
+  padding: 25px 10px;
+  border-radius: 40px;
+  right: 55px;
+  transition: all 250ms;
+  box-shadow: grey 5px 7px 8px;
+  border: 1px solid black;
+}
+
+.on-off-button:checked + label {
+  background-color: green;
+  transition: all 250ms;
+}
+
+.setting > .body > input {
+  zoom: 6;
+  z-index: 100;
+  position: relative;
+  top: 4px;
+  left: 8px;
+  opacity: 0;
+}
+
+label > .fa-power-off {
+  position: relative;
+  top: 16px;
+  font-size: 60px;
+}

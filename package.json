@@ -1,0 +1,27 @@
+{
+  "name": "torrent-notifier",
+  "version": "0.0.1",
+  "description": "A GUI made with electron to monitor your favourite torrent shows.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron main.js"
+  },
+  "keywords": [
+    "Electron",
+    "torrent",
+    "notifier"
+  ],
+  "author": "Jason Godson",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.0",
+    "electron-reload": "^1.0.0"
+  },
+  "dependencies": {
+    "jquery": "^3.0.0",
+    "moment": "^2.14.1",
+    "moment-timezone": "^0.5.4",
+    "node-notifier": "^4.6.0",
+    "node-schedule": "^1.1.1"
+  }
+}
