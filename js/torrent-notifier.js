@@ -4,6 +4,8 @@ const fs = require('fs');
 const request = require('request');
 const EventEmitter = require('events');
 const notifier = require('node-notifier');
+const fileOps = require('./fileOps.js');
+const settings = require('./settings.js');
 const $ = jQuery = require("jquery");
 
 // Create a new EventEmitter
@@ -63,7 +65,7 @@ torrentAlerter.on('newData', function(data, currentShow) {
 				// Check to see if we are finished now
 				if (totalShows === 0) {
 					// Save changes to disk when finished everything
-					saveFile();
+					saveShows();
 				}
 			}
 		}
@@ -76,7 +78,7 @@ torrentAlerter.on('message', function(message) {
 });
 
 // Check API for given show name
-function checkForNewEpisode(show) {
+exports.checkForNewEpisode = function checkForNewEpisode(show) {
 	// Make request to torrent API
 	request(`https://torrentproject.se/?s=${encodeURIComponent(show)}&out=json&orderby=latest`, function(err, result) {
 		// If error log to UI console that request was not successful
@@ -92,16 +94,21 @@ function checkForNewEpisode(show) {
 		}
 	});
 }
-exports.checkForNewEpisode = checkForNewEpisode;
+
 
 // Show notification center notification
 function newEpisodeAlert(torrentInfo) {
-	notifier.notify({
-		'title': `New Episode of ${torrentInfo.showName} available!`,
-		'sound': true,
-		'message': 'Click to download top result',
-		'open': `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`
-	});
+	if (settings.getSetting('Notifications')) {
+		notifier.notify({
+			'title': `New Episode of ${torrentInfo.showName} available!`,
+			'sound': true,
+			'message': 'Click to download top result',
+			'open': `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`
+		});
+	}
+	else {
+		emitMessage(`New episode of ${torrentInfo.showName} available, but noficiations turned off`);
+	}
 }
 
 // Increments episode by one. Given in format: S##E##
@@ -119,25 +126,22 @@ function emitMessage(message) {
 exports.emitMessage = emitMessage;
 
 // Function to save changes to show list file
-function saveFile() {
-	try {
-		fs.writeFileSync(`data/${FILENAME}`, JSON.stringify(showList));
-		emitMessage('File saved successfully!');
+exports.saveShows = function saveShows() {
+	if(fileOpts.saveFile(FILENAME, showList)) {
+		emitMessage('Show list saved to file successfully');
 	}
-	catch (e) {
-		emitMessage('Error saving file');
+	else {
+		emitMessage('Error saving show list to file');
 	}
 }
-exports.saveFile = saveFile;
 
 // Return entire show list
-function getShowList() {
+exports.getShowList = function getShowList() {
 	return showList;
 }
-exports.getShowList = getShowList;
 
 // Return a single show or undefined if not found
-function getShow(name) {
+exports.getShow = function getShow(name) {
 	Object.keys.forEach(function (showName) {
 		if (name === showName) {
 			return showList[showName];
@@ -145,10 +149,9 @@ function getShow(name) {
 	});
 	return undefined;
 }
-exports.getShow = getShow;
 
 // Add a show to the show list
-function addShow(newShow) {
+exports.addShow = function addShow(newShow) {
 	showList[newShow.nameOfShow] = {
 		nextEpisode : newShow.nextEpisode,
 		airDay : newShow.airDay,
@@ -156,42 +159,39 @@ function addShow(newShow) {
 		timezone : newShow.timezone,
 		active : newShow.active
 	}
-	saveFile();
+	saveShows();
 }
-exports.addShow = addShow;
 
 // Delete a show from the show list
-function removeShow(showName) {
+exports.removeShow = function removeShow(showName) {
 	delete showList[showName];
-	saveFile();
+	saveShows();
 }
-exports.removeShow = removeShow;
 
 // TODO Edit Show
+exports.showEdit = function showEdit(name, newData) {
 
-function toggleActive(showName) {
-	showList[showName].active = !showList[showName].active;
-	saveFile();
 }
-exports.toggleActive = toggleActive;
+
+exports.toggleActive = function toggleActive(showName) {
+	showList[showName].active = !showList[showName].active;
+	saveShows();
+}
 
 // Load the showList from file (done on app load)
-function loadShowList() {
-	emitMessage("Looking for showList.json...");
+exports.loadShowList = function loadShowList() {
 	try {
 		showList = JSON.parse(fs.readFileSync(`${process.cwd()}/data/${FILENAME}`));
-		emitMessage("Found file, loaded data.");
+		emitMessage("Found show list file, loaded data.");
 	}
 	catch (e) {
-		console.log(e);
-		emitMessage("No file found. Using a blank list.");
+		emitMessage("No show list file found. Using a blank list.");
 		showList = {};
 	}
 }
-exports.loadShowList = loadShowList
 
 // Returns name and time of show airing (active shows only)
-function checkShowsOnDay(dayOfWeek) {
+exports.checkShowsOnDay = function checkShowsOnDay(dayOfWeek) {
 	let showsThatDay = [];
 	Object.keys(showList).forEach(function (showName) {
 		showList[showName].airDay.forEach(function (day) {
@@ -204,6 +204,5 @@ function checkShowsOnDay(dayOfWeek) {
 	});
 	return showsThatDay;
 }
-exports.checkShowsOnDay = checkShowsOnDay;
 
 module.exports = exports;

@@ -1,8 +1,7 @@
 <div id="show-list"></div>
 <div id="addShowButton" title="Add Show"><i class="fa fa-plus"></i></div>
 <script>
-var uiComp = require('../js/components.js');
-$(document).ready(function() {
+$(document).ready( () => {
 	uiComp.buildShowList( function (html) {
 		$('#show-list').append(html);
 	});

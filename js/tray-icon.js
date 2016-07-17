@@ -11,6 +11,7 @@ ipc.on('put-in-tray', function (event) {
   const iconName = process.platform === 'win32' ? '../data/images/app-icon-md.png' : '../data/images/app-icon-sm.png';
   const iconPath = path.join(__dirname, iconName);
   // Check to make sure app icon does not exist so we don't make more than one (Great for electron-reload)
+
   if (!appIcon) {
     appIcon = new Tray(iconPath);
     const contextMenu = Menu.buildFromTemplate([{
@@ -18,6 +19,7 @@ ipc.on('put-in-tray', function (event) {
       click: function () {
         event.sender.send('tray-removed');
         appIcon.destroy();
+        appIcon = null;
       }
     }]);
     appIcon.setToolTip('Torrent Notifier');
@@ -27,6 +29,7 @@ ipc.on('put-in-tray', function (event) {
 
 ipc.on('remove-tray', function () {
   appIcon.destroy();
+  appIcon = null;
 });
 
 app.on('window-all-closed', function () {

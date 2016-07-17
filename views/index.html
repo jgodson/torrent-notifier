@@ -9,10 +9,9 @@
   <body>
   <div id='backdrop'>
     <div id='changeContainer'>
-      <div>Title</div>
-      <div id='content'>Content</div>
     </div>
   </div>
+  <div id='toaster'></div>
   <div id="wrapper">
     <div id="side-nav">
       <ul>
@@ -42,6 +41,7 @@
 </body>
 <script>
   const $ = jQuery = require("jquery");
+  const uiComp = require('../js/components.js');
   require('../js/app.js');
   require('../js/interactions.js');
   require('../js/utils.js');
@@ -64,11 +64,6 @@
       $('#console').show();
       $('#main').hide();
     }
-  }
-
-  // Change the size of the Side Nav
-  function adjustHeight() {
-
   }
 
   // Show the show list as initial view

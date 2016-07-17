@@ -1,22 +1,7 @@
 <div id="settings-wrapper">
-	<div class='setting'>
-		<div class='title'><span>Tray Icon</span></div>
-		<div class='body'>
-			<input data-setting='tray-icon' type='checkbox' class='on-off-button'>
-				<label>
-					<i class='fa fa-power-off'></i>
-				</label>
-			</input>
-		</div>
-	</div>
-	<div class='setting'>
-		<div class='title'><span>Other Setting</span></div>
-		<div class='body'>
-			<input data-setting='other-setting' type='checkbox' class='on-off-button'>
-				<label>
-					<i class='fa fa-power-off'></i>
-				</label>
-			</input>
-		</div>
-	</div>
 </div>
+<script>
+	$(document).ready( () => {
+		$('#settings-wrapper').append(uiComp.buildSettings());
+	});
+</script>

@@ -16,7 +16,7 @@ body {
   height: 100%;
   position: fixed;
   z-index: 100000;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.6);
   display: none;
 }
 
@@ -149,7 +149,6 @@ body {
 
 #console {
   display: none;
-  color: limegreen;
   font-family: monospace;
   padding-left: 36px;
   padding-top: 18px;
@@ -241,7 +240,6 @@ body {
 
 .infoButton:hover {
   transform: scale(1.2, 1.2);
-  transition: all 250ms;
 }
 
 .infoButton > i {
@@ -256,7 +254,6 @@ body {
   position: absolute;
   bottom: 165px;
   left: 25px;
-  transition: all 250ms;
 }
 
 .activeButton:hover {
@@ -266,7 +263,6 @@ body {
 .activeButton > i {
   font-size: 120px;
   color: grey;
-  transition: all 250ms;
 }
 
 .activeButton.active > i {
@@ -275,7 +271,6 @@ body {
 
 .activeButton > i:active {
   transform: scale(1.4, 1.4);
-  transition: all 250ms;
 }
 
 .delete {
@@ -320,7 +315,6 @@ body {
 
 .day:hover {
   transform: scale(2.0, 2.0);
-  transition: all 250ms;
 }
 
 .blank {
@@ -411,7 +405,6 @@ body {
 
 #addShowButton:hover{
   transform: scale(1.2, 1.2);
-  transition: all 500ms;
 }
 
 #monthName {
@@ -454,14 +447,90 @@ body {
 }
 
 .setting > .title > span {
-  vertical-align: middle;
+  position: relative;
+  top: 4px;
 }
 
 .setting > .body {
   text-align: center;
   width: 100%;
-  height: 174px;
-  background-color: #EEE
+  height: calc(100% - 26px);
+  background-color: #EEE;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+/* ---- Add/New Show Dialog ---- */
+
+#changeContainer {
+  width: 100%;
+  height: 100%;
+}
+
+#dialog {
+  position: relative;
+  top: calc(50% - 200px);
+  float: none;
+  margin: auto;
+  width: 500px;
+  height: 400px;
+}
+
+#dialog .input-row {
+  position: relative;
+  padding: 25px 15px;
+}
+
+.input-row > label {
+  float: left;
+  position: relative;
+  top: 5px;
+}
+
+.input-row > input {
+  width: 280px;
+  border-radius: 10px;
+  font-size: 13px;
+  padding: 3px;
+  float: right;
+  text-align: right;
+  position: relative;
+  top: 3px;
+}
+
+.input-row form {
+    position: relative;
+    top: 4px;
+}
+
+#close-btn {
+  position: absolute;
+  top: 2px;
+  right: 7px;
+  float: right;
+  font-size: 18px;
+  color: darkred;
+  transition: color 500ms;
+  cursor: pointer;
+}
+
+#close-btn:hover {
+  color: red;
+}
+
+.dialog-buttons {
+  position: absolute;
+  bottom: 20px;
+  right: 30px;
+}
+
+#cancel-btn {
+  position: relative;
+  right: 30px;
+}
+
+.button {
+  transform: scale(1.5);
 }
 
 /* ---- On/Off Button ---- */
@@ -471,23 +540,23 @@ body {
   padding: 25px 10px;
   border-radius: 40px;
   right: 55px;
-  transition: all 250ms;
   box-shadow: grey 5px 7px 8px;
   border: 1px solid black;
+  transition: all 250ms;
 }
 
 .on-off-button:checked + label {
   background-color: green;
-  transition: all 250ms;
 }
 
-.setting > .body > input {
+.setting > .body > input[type='checkbox'] {
   zoom: 6;
   z-index: 100;
   position: relative;
   top: 4px;
-  left: 8px;
+  left: 7px;
   opacity: 0;
+  cursor: pointer;
 }
 
 label > .fa-power-off {

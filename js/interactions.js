@@ -1,8 +1,9 @@
 const $ = jQuery = require("jquery");
 const t = require('./torrent-notifier.js');
+const settings = require('./settings.js');
+const uiComp = require('./components.js');
 
 const $backdrop = $('#backdrop');
-
 
 // ---- Animations ----
 // Status dropdown animation
@@ -18,7 +19,6 @@ $(document).on('mouseenter', '.showListing', function() {
 $(document).on('mouseleave', '.showListing', function() {
 	$(this).find('.info').fadeOut();
 });
-
 
 // ---- Event Listeners ----
 // Calendar day click displays time show is on
@@ -55,13 +55,20 @@ $(document).on('click', '.infoButton', function() {
 
 // Add show button click displays new show dialog
 $(document).on('click', '#addShowButton', function() {
-	console.log('New Show');
-	// TODO Make an add show page (could be same as edit)
 	$backdrop.fadeIn();
+	$('#changeContainer').html(uiComp.buildDialog());
 });
 
 // Checkbox input changes clicked setting in file
-$(document).on('click', '.setting input', function() {
-	// TODO Change settings file to reflect changes
-	console.log($(this).attr('data-setting') + " - " + $(this).prop('checked'));
+$(document).on('click', '.setting input[type="checkbox"]', function() {
+	settings.toggleSetting($(this).attr('data-setting'));
+});
+
+// Cancel edit/new show dialog
+$(document).on('click', '.close-dialog', function() {
+	$backdrop.fadeOut();
+});
+
+$(document).on('click', '#save-btn', function () {
+	
 });

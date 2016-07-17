@@ -1,6 +1,9 @@
+'use strict';
+
 const utils = require('./utils.js');
 const t = require('./torrent-notifier.js');
 const moment = require('moment');
+const settings = require('./settings.js');
 
 var exports = {};
 
@@ -21,7 +24,7 @@ function buildShow(showName, currentShow, next) {
 }
 exports.buildShow = buildShow;
 
-function buildShowList (next) {
+exports.buildShowList = function buildShowList (next) {
 	let htmlList = "";
 	let showList = t.getShowList();
 	var numShows = Object.keys(showList).length;
@@ -41,9 +44,8 @@ function buildShowList (next) {
 		next("<p>Nothing to see here! Add some shows by clicking the + button</p>");
 	}
 }
-exports.buildShowList = buildShowList;
 
-function buildCalendar() {
+exports.buildCalendar = function buildCalendar() {
 	let today = new Date();
 	let monthNames = {
 		0 : "January",
@@ -97,9 +99,8 @@ function buildCalendar() {
 	}
 	return htmlCalendar;
 }
-exports.buildCalendar = buildCalendar;
 
-function buildBatteryLevel(batteryLevel) {
+exports.buildBatteryLevel = function buildBatteryLevel(batteryLevel) {
 	batteryLevel *= 100;
 	batteryLevel = Math.round(batteryLevel);
 	let levels = [10, 30, 50, 90];
@@ -107,16 +108,69 @@ function buildBatteryLevel(batteryLevel) {
 	levels = levels.sort( (a, b) => a > b );
 	return `<i class="fa fa-battery-${levels.indexOf(batteryLevel)}"></i><div>${batteryLevel}%</div>`;
 }
-exports.buildBatteryLevel = buildBatteryLevel;
 
-// TODO Make NEW/Edit dialog
-function buildDialog(showName) {
+// Build new/edit show dialog box
+exports.buildDialog = function buildDialog(showName) {
 	if (showName) {
 		showInfo = t.getShow(showName);
 	}
-	dialog = `<div id='dialog'>
-	<div class='dialog-title'>${showName ? 'Editing ' + showName : 'Add new show'}</div>
-	<div class='dialog-body'`;
+	let dialog = `<div class='setting' id='dialog'>
+	<div class='title'><span>${showName ? 'Editing ' + showName : 'Add new show'}</span>
+		<div class='close-dialog' id='close-btn'><i class='fa fa-times-circle-o'></i></div>
+	</div>
+	<div class='body'>
+		<div class='input-row'>
+			<label>Show Name</label><input name='show-name' type='text' placeholder='Name of show' required>
+		</div>
+		<div class='input-row'>
+			<label>Next Episode (S##E##)</label><input name='next-episode' type='text' placeholder='S01E01'>
+		</div>
+		<div class='input-row'>
+			<label>Air Day</label><input name='air-day' type='text' placeholder='Wednesday' required>
+		</div>
+		<div class='input-row'>
+			<label>Air Time</label><input name='air-time' type='text' placeholder='22:00' required>
+		</div>
+		<div class='input-row'>
+			<label>Airing Timezone</label><input name='timezone' type='text' placeholder='America/New York'>
+		</div>
+		<div class='input-row'>
+				<label>Currently Airing</label>
+				<form>
+					<input name='active' type='radio' value='true' checked required>Yes
+					<input name='active' type='radio' value='false' required>No
+				</form>
+		</div>
+		<div class='dialog-buttons'>
+			<button class='button close-dialog' id='cancel-btn'>Cancel</button>
+			<button class='button' id='save-btn'>Save</button>
+		</div>
+	</div>`;
+	return dialog;
+}
+
+// Build settings page
+exports.buildSettings = function buildSettings() {
+	let settingsHtml = "";
+	let allSettings = settings.getAllSettings();
+	Object.keys(allSettings).forEach(function (thisSetting) {
+		settingsHtml += buildSetting(thisSetting);
+	});
+	return settingsHtml;
+}
+
+// Build single setting box
+function buildSetting(name) {
+	return `<div class='setting'>
+		<div class='title'><span>${name}</span></div>
+		<div class='body'>
+			<input data-setting='${name}' type='checkbox' class='on-off-button' ${settings.getSetting(name) ? 'checked' : ''}>
+				<label>
+					<i class='fa fa-power-off'></i>
+				</label>
+			</input>
+		</div>
+	</div>`;
 }
 
 module.exports = exports;
