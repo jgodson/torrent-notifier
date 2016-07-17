@@ -12,7 +12,7 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600, icon:`${__dirname}/data/images/icons/app-icon-lg.png` });
+  mainWindow = new BrowserWindow({ width: 1024, height: 768, icon:`${__dirname}/data/images/icons/app-icon-lg.png` });
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/views/index.html`);

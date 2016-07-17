@@ -5,8 +5,8 @@ const request = require('request');
 const EventEmitter = require('events');
 const notifier = require('node-notifier');
 const fileOps = require('./fileOps.js');
-const settings = require('./settings.js');
 const $ = jQuery = require("jquery");
+const toaster = require('./toaster.js');
 
 // Create a new EventEmitter
 const torrentAlerter = new EventEmitter();
@@ -98,6 +98,7 @@ exports.checkForNewEpisode = function checkForNewEpisode(show) {
 
 // Show notification center notification
 function newEpisodeAlert(torrentInfo) {
+	const settings = require('./settings.js');
 	if (settings.getSetting('Notifications')) {
 		notifier.notify({
 			'title': `New Episode of ${torrentInfo.showName} available!`,

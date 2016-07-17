@@ -11,7 +11,13 @@
     <div id='changeContainer'>
     </div>
   </div>
-  <div id='toaster'></div>
+  <div id='toaster'>
+    <i class='fa fa-info-circle'></i>
+    <div id='toaster-content'><div><span>Content</span></div></div>
+    <div class='close'>
+      <span>Close</span>
+    </div>
+  </div>
   <div id="wrapper">
     <div id="side-nav">
       <ul>
@@ -42,6 +48,7 @@
 <script>
   const $ = jQuery = require("jquery");
   const uiComp = require('../js/components.js');
+  const toaster = require('../js/toaster.js');
   require('../js/app.js');
   require('../js/interactions.js');
   require('../js/utils.js');

@@ -12,7 +12,8 @@ const FILENAME = 'settings.json';
 const defaultSettings = {
 	"Tray Icon" : true,
 	"Tutorial Mode" : true,
-	"Notifications" : true
+	"Notifications" : true,
+	"Automatic Downloads" : false
 };
 
 // module settings List

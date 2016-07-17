@@ -2,6 +2,7 @@ const $ = jQuery = require("jquery");
 const t = require('./torrent-notifier.js');
 const settings = require('./settings.js');
 const uiComp = require('./components.js');
+const toaster = require('./toaster.js');
 
 const $backdrop = $('#backdrop');
 
@@ -69,6 +70,20 @@ $(document).on('click', '.close-dialog', function() {
 	$backdrop.fadeOut();
 });
 
+// Save edits/new show
 $(document).on('click', '#save-btn', function () {
-	
+	let newShow = {
+		nameOfShow : $('input[name="show-name"]'),
+		nextEpisode : $('input[name="next-episode"]'),
+		airDay : $('input[name="air-day"]'),
+		airTime : $('input[name="air-time"]'),
+		timezone : $('input[name="show-time"]'),
+		active : $('input[name="active"]:checked').attr('value')
+	}
+	t.addShow(newShow);
+});
+
+// Close toast notification
+$(document).on('click', '.close', function() {
+	toaster.hideToast();
 });
