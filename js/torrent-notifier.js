@@ -128,8 +128,8 @@ function emitMessage(message) {
 exports.emitMessage = emitMessage;
 
 // Function to save changes to show list file
-exports.saveShows = function saveShows() {
-	if(fileOpts.saveFile(FILENAME, showList)) {
+function saveShows() {
+	if(fileOps.saveFile(FILENAME, showList)) {
 		emitMessage('Show list saved to file successfully');
 	}
 	else {
@@ -137,6 +137,7 @@ exports.saveShows = function saveShows() {
 		toaster.showToast('Error saving show list to file');
 	}
 }
+exports.saveShows = saveShows;
 
 // Return entire show list
 exports.getShowList = function getShowList() {

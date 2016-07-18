@@ -12,7 +12,7 @@
     "notifier"
   ],
   "author": "Jason Godson",
-  "license": "CC0-1.0",
+  "license": "ISC",
   "devDependencies": {
     "electron-prebuilt": "^1.2.0",
     "electron-reload": "^1.0.0"

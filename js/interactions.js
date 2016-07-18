@@ -3,6 +3,7 @@ const t = require('./torrent-notifier.js');
 const settings = require('./settings.js');
 const uiComp = require('./components.js');
 const toaster = require('./toaster.js');
+const utils = require('./utils.js');
 
 const $backdrop = $('#backdrop');
 
@@ -70,15 +71,20 @@ $(document).on('click', '.close-dialog', function() {
 
 // Save edits/new show
 $(document).on('click', '#save-btn', function () {
+	let dayArray = $('input[name="air-day"]').val().replace(/ /g, '').split(',');
 	let newShow = {
 		nameOfShow : $('input[name="show-name"]').val(),
 		nextEpisode : $('input[name="next-episode"]').val(),
-		airDay : $('input[name="air-day"]').val(),
+		airDay : dayArray,
 		airTime : $('input[name="air-time"]').val(),
 		timezone : $('input[name="timezone"]').val(),
 		active : $('input[name="active"]:checked').val()
 	}
 	t.addShow(newShow);
+	$backdrop.fadeOut();
+	uiComp.buildShow(newShow.nameOfShow, newShow, function (newShowHTML) {
+		$('#show-list').append(newShowHTML);
+	});
 });
 
 // Close toast notification
@@ -90,11 +96,17 @@ $(document).on('click', '.close', function() {
 $(document).on('blur', 'input[name="show-name"]', function () {
 	if(settings.getSetting('Auto Show Search')) {
 		$('#request-status').fadeIn();
-		utils.getInfo($('input[name="show-name"]').val(), function(showData) {
-			$('#request-status').fadeOut();
-			$('input[name="airDay"]').val(showData.airDay);
-			$('input[name="air-time"]').val(showData.airTime);
-			$('input[name="timezone"]').val(showData.timezone);
+		utils.getInfo($('input[name="show-name"]').val(), function(err, showData) {
+			if (!err) {
+				$('#request-status').fadeOut();
+				$('input[name="show-name"]').val(showData.nameOfShow),
+				$('input[name="air-day"]').val(showData.airDay);
+				$('input[name="air-time"]').val(showData.airTime);
+				$('input[name="timezone"]').val(showData.timezone);
+			}
+			else {
+				$('#request-status').fadeOut();
+			}
 		});
 	}
 });

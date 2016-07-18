@@ -263,6 +263,7 @@ body {
 .activeButton > i {
   font-size: 120px;
   color: grey;
+  transition: all 200ms;
 }
 
 .activeButton.active > i {
@@ -533,11 +534,11 @@ body {
 }
 
 #request-status {
-    position: relative;
-    top: 5px;
-    left: 30px;
-    color: slateblue;
-    display: none;
+  position: absolute;
+  top: 30px;
+  left: 170px;
+  color: slateblue;
+  display: none;
 }
 
 /* ---- On/Off Button ---- */
