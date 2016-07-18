@@ -5,12 +5,14 @@ const t = require('./torrent-notifier.js');
 const moment = require('moment');
 const settings = require('./settings.js');
 
+const DEFAULT_IMAGE = `${process.cwd()}/data/images/noimage.jpg`;
+
 var exports = {};
 
 function buildShow(showName, currentShow, next) {
-	utils.getImage(showName, function(err, image) {
+	utils.getImage(showName, null, function(err, image) {
 		if (err) {
-			image = `${process.cwd()}/data/images/noimage.jpeg`;
+			image = DEFAULT_IMAGE;
 		}
 		next(`<div class='showListing'><img src='${image}' />
 	<div class='info' data='${showName}'>
@@ -122,16 +124,16 @@ exports.buildDialog = function buildDialog(showName) {
 		<div class='input-row'>
 			<label>Show Name</label>
 			<span id='request-status'><i class='fa fa-circle-o-notch fa-spin'></i></span>
-			<input name='show-name' type='text' placeholder='Name of show' required>
+			<input name='show-name' type='text' placeholder='Name of show'>
 		</div>
 		<div class='input-row'>
 			<label>Next Episode (S##E##)</label><input name='next-episode' type='text' placeholder='S01E01'>
 		</div>
 		<div class='input-row'>
-			<label>Air Day</label><input name='air-day' type='text' placeholder='Wednesday' required>
+			<label>Air Day</label><input name='air-day' type='text' placeholder='Wednesday'>
 		</div>
 		<div class='input-row'>
-			<label>Air Time</label><input name='air-time' type='text' placeholder='22:00' required>
+			<label>Air Time</label><input name='air-time' type='time' placeholder='22:00'>
 		</div>
 		<div class='input-row'>
 			<label>Airing Timezone</label><input name='timezone' type='text' placeholder='America/New York'>
@@ -139,8 +141,8 @@ exports.buildDialog = function buildDialog(showName) {
 		<div class='input-row'>
 				<label>Currently Airing</label>
 				<form>
-					<input name='active' type='radio' value='true' checked required>Yes
-					<input name='active' type='radio' value='false' required>No
+					<input name='active' type='radio' value='1' checked required>Yes
+					<input name='active' type='radio' value='0' required>No
 				</form>
 		</div>
 		<div class='dialog-buttons'>

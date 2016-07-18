@@ -21,7 +21,7 @@ function updateConnection (status) {
 }
 module.exports.updateConnection = updateConnection;
 
-module.exports.getInfo = function getInfo(nameOfShow, next) {
+function getInfo(nameOfShow, next) {
 	request(`http://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(nameOfShow)}`, function(err, result) {
 		if (!err && result.statusCode === 200) {
 			t.emitMessage(`Got result for ${nameOfShow} from tvmaze API.`);
@@ -33,19 +33,13 @@ module.exports.getInfo = function getInfo(nameOfShow, next) {
 				airDay : result.schedule.days,
 				timezone : result.network.country.timezone
 			}
-			let localPath = `${process.cwd()}/data/images/${showInfo.nameOfShow.replace(/ /g, '-')}.jpg`; // Path for file
+			if (result.image && (result.image.original || result.image.medium)) {
+				showInfo.image = result.image.original || result.image.medium;
+			}
+			else {
+				t.emitMessage(`No image source for ${nameOfShow}`);
+			}
 			next(null, showInfo);
-			fs.exists(localPath, function (exists) {
-				if (!exists) {
-					console.log('donwloading image');
-					download(result.image.original, localPath, function(err) {
-						if (err) { t.emitMessage('Could not get image for newly added show'); }
-					});
-				}
-				else {
-					console.log('Image already exists');
-				}
-			});
 		}
 		else {
 			t.emitMessage(`Could not get info for ${nameOfShow} from tvmaze API`);
@@ -53,61 +47,39 @@ module.exports.getInfo = function getInfo(nameOfShow, next) {
 		}
 	});
 }
+module.exports.getInfo = getInfo;
 
-function getImage(nameOfShow, next) {
+function getImage(nameOfShow, url, next) {
+	if (!next || typeof next !== 'function') {
+		next = () => console.log('No next function given for getImage function');
+	}
+	t.emitMessage(`Getting image for ${nameOfShow}`);
 	let localPath = `${process.cwd()}/data/images/${nameOfShow.replace(/ /g, '-')}.jpg`; // Path for file
-	fs.readFile(localPath, function(err, data) {
-		if (err) {
-			t.emitMessage(`No local image for ${nameOfShow}, getting image...`);
-			// Do a request for the show info
-			request(`http://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(nameOfShow)}`, function(err, result) {
-				if (!err) {
-					t.emitMessage(`Got show info for ${nameOfShow} from tvmaze API...`);
-					if (result.statusCode === 200) {
-						// Then do a request for the image
-						result = JSON.parse(result.body); // Parse the JSON in the body, we don't need the rest of the result object now
-						if (result.image.original) {
-							download(result.image.original, localPath, function(err) {
-								if (!err) {
-									t.emitMessage(`Local image file created for ${nameOfShow}`);
-									next(null);
-								}
-								else {
-									t.emitMessage(`Could not get image for ${nameOfShow}`);
-									next('error');
-								}
-							});
-						}
-						else if (result.image.medium) {
-							t.emitMessage(`No original size image for ${nameOfShow}, using medium size image.`);
-							download(result.image.medium, localPath, function(err) {
-								if (!err) {
-									t.emitMessage(`Local image file created for ${nameOfShow}`);
-									next(null);
-								}
-								else {
-									t.emitMessage(`Could not get image for ${nameOfShow}`);
-									next('error');
-								}
-							});
-						}
-						else {
-							t.emitMessage(`No image source for ${nameOfShow}.`);
-						}
-					}
-					else {
-						t.emitMessage(`Problem with show data for ${nameOfShow}. May be incorrect spelling.`);
+	fs.exists(localPath, function (exists) {
+		if (!exists) {
+			if (typeof url === 'string') {
+				download(url, localPath, function(err) {
+					if (err) { t.emitMessage(`Could not get image for ${nameOfShow}.`); }
+					next(null, localPath);
+				});
+			}
+			else {
+				t.emitMessage(`No image found for ${nameOfShow} and no proper url was specified for download. Getting show info...`);
+				getInfo(nameOfShow, function(err, info) {
+					if (err || !info.image) {
+						t.emitMessage(`Could not get info for ${nameOfShow}`);
 						next('error');
 					}
-				}
-				else {
-					t.emitMessage(`Could not get info for ${nameOfShow} from tvmaze API`);
-					next('error');
-				}
-			});
+					else {
+						download(info.image, localPath, function(err) {
+							if (err) { t.emitMessage(`Could not get image for ${nameOfShow}.`); }
+							next(null, localPath);
+						});
+					}
+				});
+			}
 		}
 		else {
-			t.emitMessage(`Found local file for ${nameOfShow}`);
 			next(null, localPath);
 		}
 	});
@@ -137,7 +109,7 @@ function download(url, filePath, next) {
 
 			// When response ends, close file and call callback function
 			res.on('end',function(){
-				t.emitMessage(`Successfully downloaded image. Size is ${(totalSize / 1024).toFixed(2)} KB`);
+				t.emitMessage(`Successfully downloaded image. Size is ${(totalSize / 1024).toFixed(2)} kB`);
 				file.end();
 				next(null);
 			});

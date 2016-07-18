@@ -4,6 +4,7 @@ const settings = require('./settings.js');
 const uiComp = require('./components.js');
 const toaster = require('./toaster.js');
 const utils = require('./utils.js');
+let currentImageURL = null;
 
 const $backdrop = $('#backdrop');
 
@@ -74,17 +75,27 @@ $(document).on('click', '#save-btn', function () {
 	let dayArray = $('input[name="air-day"]').val().replace(/ /g, '').split(',');
 	let newShow = {
 		nameOfShow : $('input[name="show-name"]').val(),
-		nextEpisode : $('input[name="next-episode"]').val(),
+		nextEpisode : $('input[name="next-episode"]').val() || 'S01E01',
 		airDay : dayArray,
 		airTime : $('input[name="air-time"]').val(),
-		timezone : $('input[name="timezone"]').val(),
-		active : $('input[name="active"]:checked').val()
+		timezone : $('input[name="timezone"]').val() || 'America/New York',
+		active : $('input[name="active"]:checked').val() == true ? true : false
 	}
 	t.addShow(newShow);
-	$backdrop.fadeOut();
-	uiComp.buildShow(newShow.nameOfShow, newShow, function (newShowHTML) {
-		$('#show-list').append(newShowHTML);
-	});
+	if (currentImageURL) {
+		utils.getImage(newShow.nameOfShow, currentImageURL, function() {
+			uiComp.buildShow(newShow.nameOfShow, newShow, function (newShowHTML) {
+				$('#show-list').append(newShowHTML);
+				$backdrop.fadeOut();
+			});
+		});
+	}
+	else {
+		uiComp.buildShow(newShow.nameOfShow, newShow, function (newShowHTML) {
+			$('#show-list').append(newShowHTML);
+			$backdrop.fadeOut();
+		});
+	}
 });
 
 // Close toast notification
@@ -103,6 +114,7 @@ $(document).on('blur', 'input[name="show-name"]', function () {
 				$('input[name="air-day"]').val(showData.airDay);
 				$('input[name="air-time"]').val(showData.airTime);
 				$('input[name="timezone"]').val(showData.timezone);
+				currentImageURL = showData.image;
 			}
 			else {
 				$('#request-status').fadeOut();
