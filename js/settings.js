@@ -5,15 +5,16 @@ const t = require('./torrent-notifier.js');
 const fileOps = require('./fileOps.js');
 const ipc = require('electron').ipcRenderer
 const event = require('events');
+const toaster = require('./toaster.js');
 
 const FILENAME = 'settings.json';
 
 // Set the default settings TODO: seperate file?
 const defaultSettings = {
 	"Tray Icon" : true,
-	"Tutorial Mode" : true,
 	"Notifications" : true,
-	"Automatic Downloads" : false
+	"Automatic Downloads" : false,
+	"Auto Show Search" : true
 };
 
 // module settings List
@@ -41,6 +42,7 @@ function saveSettings() {
 	}
 	else {
 		t.emitMessage('Error saving settings to file');
+		toaster.showToast('Error saving settings to file.')
 	}
 }
 exports.saveSettings = saveSettings;

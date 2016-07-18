@@ -44,13 +44,11 @@ $(document).on('click', '.infoButton', function() {
 		}
 	}
 	else if (this.matches('.edit')) {
-		console.log('Edit ' + actionItem);
 		// TODO Make an edit page
 	}
 	else {
-		console.log('Toggle ' + actionItem);
 		t.toggleActive(actionItem);
-		let $element = $(this).parent().find('.activeButton').toggleClass('active');
+		$(this).parent().find('.activeButton').toggleClass('active');
 	}
 });
 
@@ -73,12 +71,12 @@ $(document).on('click', '.close-dialog', function() {
 // Save edits/new show
 $(document).on('click', '#save-btn', function () {
 	let newShow = {
-		nameOfShow : $('input[name="show-name"]'),
-		nextEpisode : $('input[name="next-episode"]'),
-		airDay : $('input[name="air-day"]'),
-		airTime : $('input[name="air-time"]'),
-		timezone : $('input[name="show-time"]'),
-		active : $('input[name="active"]:checked').attr('value')
+		nameOfShow : $('input[name="show-name"]').val(),
+		nextEpisode : $('input[name="next-episode"]').val(),
+		airDay : $('input[name="air-day"]').val(),
+		airTime : $('input[name="air-time"]').val(),
+		timezone : $('input[name="timezone"]').val(),
+		active : $('input[name="active"]:checked').val()
 	}
 	t.addShow(newShow);
 });
@@ -86,4 +84,17 @@ $(document).on('click', '#save-btn', function () {
 // Close toast notification
 $(document).on('click', '.close', function() {
 	toaster.hideToast();
+});
+
+// Get other info automatically after show name entered
+$(document).on('blur', 'input[name="show-name"]', function () {
+	if(settings.getSetting('Auto Show Search')) {
+		$('#request-status').fadeIn();
+		utils.getInfo($('input[name="show-name"]').val(), function(showData) {
+			$('#request-status').fadeOut();
+			$('input[name="airDay"]').val(showData.airDay);
+			$('input[name="air-time"]').val(showData.airTime);
+			$('input[name="timezone"]').val(showData.timezone);
+		});
+	}
 });

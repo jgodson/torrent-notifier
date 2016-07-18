@@ -2,12 +2,21 @@ const utils = require('./utils.js');
 const uiComp = require('./components.js');
 const t = require('./torrent-notifier.js');
 const settings = require('./settings.js');
+const toaster = require('./toaster.js');
 const $ = jQuery = require('jquery');
 const ipc = require('electron').ipcRenderer
 
 // When app loads do these initially
 t.loadShowList(); // Load list of shows from file
 settings.loadSettings(); // Load settings from file
+
+// Show some important info when first starting app, depending on settings
+if (settings.getSetting('Automatic Downloads')) {
+	toaster.showToast('Automatic Downloads are on!');
+}
+if (!settings.getSetting('Notifications')) {
+	toaster.showToast('Notifications are turned off!');
+}
 
 // Do initial connection check
 utils.updateConnection(navigator.onLine);

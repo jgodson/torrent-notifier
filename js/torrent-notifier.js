@@ -7,12 +7,13 @@ const notifier = require('node-notifier');
 const fileOps = require('./fileOps.js');
 const $ = jQuery = require("jquery");
 const toaster = require('./toaster.js');
+const shell = require('electron').shell
 
 // Create a new EventEmitter
 const torrentAlerter = new EventEmitter();
 
 // Specify File Name
-const FILENAME = 'showList-test.json';
+const FILENAME = 'showList.json';
 
 // Map JS days 0-6 to String versions
 const dayMap = {
@@ -24,17 +25,6 @@ const dayMap = {
 	6 : 'Saturday',
 	0 : 'Sunday'
 };
-
-// Terminal Notifier examples are: TODO: Remove when appropriate
-
-// TerminalNotifier.notify('Hello World')
-// TerminalNotifier.notify('Hello World', :title => 'Ruby')
-// TerminalNotifier.notify('Hello World', :group => Process.pid)
-// TerminalNotifier.notify('Hello World', :activate => 'com.apple.Safari')
-// TerminalNotifier.notify('Hello World', :open => 'http://twitter.com/alloy')
-// TerminalNotifier.notify('Hello World', :execute => 'say "OMG"')
-// TerminalNotifier.notify('Hello World', :sender => 'com.apple.Safari')
-// TerminalNotifier.notify('Hello World', :sound => 'default')
 
 // Variable to store list of shows user is interested in
 let showList; // undefined until loadShowList is called
@@ -50,7 +40,7 @@ torrentAlerter.on('newData', function(data, currentShow) {
 		for(let i = 20; i > 0; i--) {
 			// Check to see if the new episode is in the title of this result
 			if (data[i].title.indexOf(showList[currentShow].nextEpisode) !== -1) {
-				torrentAlerter.emit('message', `New Episode of ${currentShow} found!`);
+				emitMessage(`New Episode of ${currentShow} found!`);
 				data[i].showName = currentShow;
 
 				// Triger the desktop notification
@@ -84,6 +74,7 @@ exports.checkForNewEpisode = function checkForNewEpisode(show) {
 		// If error log to UI console that request was not successful
 		if (err) {
 			emitMessage(`Request to API for ${show} was unsuccessful.`);
+			toaster.showToast(`Request to API for ${show} was unsuccessful. Check the show name.`);
 		}
 		// Trigger event to deal with data from API call if request was OK
 		if (result.statusCode === 200) {
@@ -108,7 +99,17 @@ function newEpisodeAlert(torrentInfo) {
 		});
 	}
 	else {
-		emitMessage(`New episode of ${torrentInfo.showName} available, but noficiations turned off`);
+		emitMessage(`New episode of ${torrentInfo.showName} available. Notifications are turned off.`);
+	}
+	if(settings.getSetting('Automatic Downloads')) {
+		emitMessage('Automatic downloads is turned on....');
+		emitMessage(`New episode of ${torrentInfo.showName} available. Opening magnet link...`);
+		if(shell.openExternal(`magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`)) {
+			emitMessage('Magnet link was opened successfully. Check your torrent client.');
+		}
+		else {
+			emitMessage('Torrent client not found. Please check to make sure it is associated with magnet links.');
+		}
 	}
 }
 
@@ -133,6 +134,7 @@ exports.saveShows = function saveShows() {
 	}
 	else {
 		emitMessage('Error saving show list to file');
+		toaster.showToast('Error saving show list to file');
 	}
 }
 
@@ -143,12 +145,7 @@ exports.getShowList = function getShowList() {
 
 // Return a single show or undefined if not found
 exports.getShow = function getShow(name) {
-	Object.keys.forEach(function (showName) {
-		if (name === showName) {
-			return showList[showName];
-		}
-	});
-	return undefined;
+	return showList[name];
 }
 
 // Add a show to the show list
@@ -161,6 +158,7 @@ exports.addShow = function addShow(newShow) {
 		active : newShow.active
 	}
 	saveShows();
+	toaster.showToast(`${newShow.nameOfShow} successfully added to list!`);
 }
 
 // Delete a show from the show list

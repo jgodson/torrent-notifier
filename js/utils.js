@@ -21,17 +21,21 @@ function updateConnection (status) {
 }
 module.exports.updateConnection = updateConnection;
 
-function getInfo(nameOfShow, next) {
+module.exports.getInfo = function getInfo(nameOfShow, next) {
 	request(`http://api.tvmaze.com/singlesearch/shows?q=${encodeURIComponent(nameOfShow)}`, function(err, result) {
 		if (!err) {
-			t.emitMessage(`Got show info for ${nameOfShow} from tvmaze API...`);
+			t.emitMessage(`Got show info for ${nameOfShow} from tvmaze API.`);
 			if (result.statusCode === 200) {
 				let showInfo = {
 					airTime : result.schedule.time,
 					airDay : result.schedule.days,
 					timezone : result.country.timezone
 				}
+				let localPath = `${process.cwd()}/data/images/${nameOfShow.replace(' ', '-')}.jpg`; // Path for file
 				next(null, showInfo);
+				download(result.image.original, localPath, function(err) {
+					if (err) { t.emitMessage('Could not get image for newly added show'); }
+				});
 			}
 		}
 		else {
@@ -85,13 +89,13 @@ module.exports.getImage = getImage;
 
 // Download image from given url to given path
 function download(url, filePath, next) {
+	let totalSize = 0;
 	// Check to see if there is a callback, set one if not
 	if (!next) {
 		next = (err) => console.log(err || 'done');
 	}
 	// Try to download file and catch any errors
 	try {
-		t.emitMessage(`Downloading image....`);
 		// Create our file stream and request to given url
 		var file = fs.createWriteStream(filePath);
 		var req = request(url);
@@ -100,13 +104,15 @@ function download(url, filePath, next) {
 		req.on('response', function(res) {
 			// Write any data events to file
 			res.on('data', function (chunk) {
-					file.write(chunk);
+				totalSize += chuck.length;
+				file.write(chunk);
 			});
 
 			// When response ends, close file and call callback function
 			res.on('end',function(){
-					file.end();
-					next(null);
+				t.emitMessage(`Successfully downloaded image. Size is ${(totalSize / 1024).toFixed(2)} KB`);
+				file.end();
+				next(null);
 			});
 		});
 	}

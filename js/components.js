@@ -120,7 +120,9 @@ exports.buildDialog = function buildDialog(showName) {
 	</div>
 	<div class='body'>
 		<div class='input-row'>
-			<label>Show Name</label><input name='show-name' type='text' placeholder='Name of show' required>
+			<label>Show Name</label>
+			<span id='request-status'><i class='fa fa-circle-o-notch fa-spin'></i></span>
+			<input name='show-name' type='text' placeholder='Name of show' required>
 		</div>
 		<div class='input-row'>
 			<label>Next Episode (S##E##)</label><input name='next-episode' type='text' placeholder='S01E01'>
