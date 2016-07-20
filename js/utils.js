@@ -4,6 +4,8 @@ const request = require('request');
 const fs = require('fs');
 const http = require('http');
 const t = require('./torrent-notifier.js');
+const moment = require('moment-timezone');
+const LOCAL_TIMEZONE = moment.tz.guess();
 
 function updateConnection (status) {
 	$status.removeClass('ok error fa-check-circle-o fa-ban');
@@ -128,10 +130,15 @@ function download(url, filePath, next) {
 	}
 }
 
-function convert12HrTime(givenTime) {
+function convert12HrTime(givenTime, showName) {
+	let show = t.getShow(showName);
+	let now = Date.now();
+	let offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(now) 
+		- moment.tz.zone(show.timezone).offset(now)) / 60;
 	let time = givenTime.split(':');
 	let hour = time[0] > 12 ? time[0] - 12 : time[0];
 	let minute = time[1];
+	hour -= offset;
 	return `${hour}:${minute} ${time[0] > 12 ? 'PM' : 'AM'}`
 }
 module.exports.convert12HrTime = convert12HrTime;

@@ -4,19 +4,28 @@ const $ = jQuery = require('jquery');
 const $toaster = $('#toaster');
 let timer;
 let shown = false;
+let backlog = [];
 
-module.exports.showToast = function showToast(message) {
+function showToast(message) {
 	if (shown) {
-		hideToast();
-		setTimeout( () => showToast(message), 400);
+		backlog.push(message);
 	}
 	else{
 		$toaster.find('#toaster-content div span').text(message);
 		$toaster.addClass('shown');
-		timer = setTimeout( () => hideToast(), 10000);
+		timer = setTimeout( () => {
+			hideToast();
+			if (backlog.length > 0) {
+				// Wait for hide animation to finish
+				setTimeout( () => {
+					showToast(backlog.shift());
+				}, 400);
+			}
+		}, 10000);
 		shown = true;
 	}
 }
+module.exports.showToast = showToast;
 
 function hideToast() {
 	clearTimeout(timer);

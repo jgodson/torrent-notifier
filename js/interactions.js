@@ -4,7 +4,8 @@ const settings = require('./settings.js');
 const uiComp = require('./components.js');
 const toaster = require('./toaster.js');
 const utils = require('./utils.js');
-let currentImageURL = null;
+const scheduler = require('./scheduler.js');
+let currentImageURL = null; // For tempory saving after getting image from tvmaze api
 
 const $backdrop = $('#backdrop');
 
@@ -42,6 +43,7 @@ $(document).on('click', '.infoButton', function() {
 	if (this.matches('.delete')) {
 		if(window.confirm(`Are you sure you want to remove ${actionItem} from your list of shows?`)) {
 			t.removeShow(actionItem);
+			scheduler.cancelShow(actionItem);
 			$(this).parent().parent().fadeOut().remove();
 		}
 	}

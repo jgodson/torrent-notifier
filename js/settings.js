@@ -14,7 +14,8 @@ const defaultSettings = {
 	"Tray Icon" : true,
 	"Notifications" : true,
 	"Automatic Downloads" : false,
-	"Auto Show Search" : true
+	"Auto Show Search" : true,
+	"Check For Torrents" : true
 };
 
 // module settings List

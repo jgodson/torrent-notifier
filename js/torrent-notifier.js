@@ -34,58 +34,62 @@ var exports = {};
 
 // ---- Event Listeners ----
 // Triggered when request has new results from API
-torrentAlerter.on('newData', function(data, currentShow) {
-	(function(data) {
+function parseData(data, currentShow) {
+	let newEpisodeFound = false;
+	return (function(data) {
+		console.log(data);
 		// Loop through the results for this show
-		for(let i = 20; i > 0; i--) {
+		for(let i = Object.keys(data).length - 1; i > 0; i--) {
 			// Check to see if the new episode is in the title of this result
+			console.log(data[i].title);
 			if (data[i].title.indexOf(showList[currentShow].nextEpisode) !== -1) {
 				emitMessage(`New Episode of ${currentShow} found!`);
 				data[i].showName = currentShow;
 
 				// Triger the desktop notification
 				newEpisodeAlert(data[i]);
+				newEpisodeFound = true;
 
 				// Update nextEpisode to what should be the next episode
 				showList[currentShow].nextEpisode = incrementEpisode(showList[currentShow].nextEpisode);
-			}
-			// When finished loop, decrement totalShows so we know when everything is finished
-			if (i === 1) {
-				totalShows--;
-				// Check to see if we are finished now
-				if (totalShows === 0) {
-					// Save changes to disk when finished everything
-					saveShows();
-				}
+				saveShows();
 			}
 		}
+		return newEpisodeFound;
 	})(data);
-});
+}
 
 // Triggered to log given message to GUI console
 torrentAlerter.on('message', function(message) {
 	$('#console').append(`<p>${new Date().toString()} - ${message}</p>`);
+	console.log(message);
 });
 
 // Check API for given show name
-exports.checkForNewEpisode = function checkForNewEpisode(show) {
-	// Make request to torrent API
-	request(`https://torrentproject.se/?s=${encodeURIComponent(show)}&out=json&orderby=latest`, function(err, result) {
-		// If error log to UI console that request was not successful
-		if (err) {
-			emitMessage(`Request to API for ${show} was unsuccessful.`);
-			toaster.showToast(`Request to API for ${show} was unsuccessful. Check the show name.`);
-		}
-		// Trigger event to deal with data from API call if request was OK
-		if (result.statusCode === 200) {
-			torrentAlerter.emit('newData', JSON.parse(result.body), show);
-		}
-		else {
-			emitMessage(`No new episode of ${show} was found`);
-		}
-	});
+exports.checkForNewEpisode = function checkForNewEpisode(show, next) {
+	const settings = require('./settings.js');
+	if (settings.getSetting('Check For Torrents')) {
+		emitMessage(`Searching for new episodes of ${show}...`);
+		// Make request to torrent API
+		request(`https://torrentproject.se/?s=${encodeURIComponent(show)}&out=json&orderby=latest`, function(err, result) {
+			// Trigger event to deal with data from API call if request was OK
+			if (!err && result.statusCode === 200) {
+				next(parseData(JSON.parse(result.body), show));
+			}
+			else {
+				// If error log to UI console that request was not successful
+				emitMessage(`Request to API for ${show} was unsuccessful.`);
+				toaster.showToast(`Request to API for ${show} was unsuccessful. Check the show name.`);
+				next(false);
+			}
+		});
+	}
+	else {
+		emitMessage('Torrent checks are turned off');
+		toaster.showToast('Torrent checks are turned off');
+		next(true); // Return true so that interval checks arent started
+	}
 }
-
 
 // Show notification center notification
 function newEpisodeAlert(torrentInfo) {
@@ -100,9 +104,10 @@ function newEpisodeAlert(torrentInfo) {
 	}
 	else {
 		emitMessage(`New episode of ${torrentInfo.showName} available. Notifications are turned off.`);
+		toaster.showToast('Notifications are turned off');
 	}
 	if(settings.getSetting('Automatic Downloads')) {
-		emitMessage('Automatic downloads is turned on....');
+		emitMessage('Automatic downloads are turned on....');
 		emitMessage(`New episode of ${torrentInfo.showName} available. Opening magnet link...`);
 		if(shell.openExternal(`magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`)) {
 			emitMessage('Magnet link was opened successfully. Check your torrent client.');
