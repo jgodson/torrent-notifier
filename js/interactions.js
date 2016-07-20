@@ -41,6 +41,7 @@ $(document).on('click', '.day', function() {
 $(document).on('click', '.infoButton', function() {
 	let actionItem = $(this).parent().attr('data');
 	if (this.matches('.delete')) {
+		// Confirm delete and then remove from Show List, scheduler and UI
 		if(window.confirm(`Are you sure you want to remove ${actionItem} from your list of shows?`)) {
 			t.removeShow(actionItem);
 			scheduler.cancelShow(actionItem);
@@ -48,11 +49,14 @@ $(document).on('click', '.infoButton', function() {
 		}
 	}
 	else if (this.matches('.edit')) {
+		// Build edit dialog
 		$backdrop.fadeIn();
 		$('#changeContainer').html(uiComp.buildDialog(actionItem));
 	}
 	else {
+		// Make active in Show List and add to scheduler jobs
 		t.toggleActive(actionItem);
+		scheduler.scheduleShow(actionItem);
 		$(this).parent().find('.activeButton').toggleClass('active');
 	}
 });

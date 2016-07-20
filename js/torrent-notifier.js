@@ -36,13 +36,14 @@ var exports = {};
 // Triggered when request has new results from API
 function parseData(data, currentShow) {
 	let newEpisodeFound = false;
+	let altSearchTerm = showList[currentShow].nextEpisode.split('E').join(' ')
+		.replace('S', '').replace(' ', 'x').replace('0', '');
 	return (function(data) {
-		console.log(data);
 		// Loop through the results for this show
 		for(let i = Object.keys(data).length - 1; i > 0; i--) {
+			console.log(i);
 			// Check to see if the new episode is in the title of this result
-			console.log(data[i].title);
-			if (data[i].title.indexOf(showList[currentShow].nextEpisode) !== -1) {
+			if (data[i].title.indexOf(showList[currentShow].nextEpisode) !== -1 || data[i].title.indexOf(altSearchTerm) !== -1) {
 				emitMessage(`New Episode of ${currentShow} found!`);
 				data[i].showName = currentShow;
 
@@ -71,7 +72,7 @@ exports.checkForNewEpisode = function checkForNewEpisode(show, next) {
 	if (settings.getSetting('Check For Torrents')) {
 		emitMessage(`Searching for new episodes of ${show}...`);
 		// Make request to torrent API
-		request(`https://torrentproject.se/?s=${encodeURIComponent(show)}&out=json&orderby=latest`, function(err, result) {
+		request(`https://torrentproject.se/?s=${encodeURIComponent(show)}&out=json&orderby=latest&num=50`, function(err, result) {
 			// Trigger event to deal with data from API call if request was OK
 			if (!err && result.statusCode === 200) {
 				next(parseData(JSON.parse(result.body), show));
