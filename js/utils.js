@@ -55,7 +55,7 @@ function getImage(nameOfShow, url, next) {
 	if (!next || typeof next !== 'function') {
 		next = () => console.log('No next function given for getImage function');
 	}
-	t.emitMessage(`Getting image for ${nameOfShow}`);
+	//t.emitMessage(`Getting image for ${nameOfShow}`);
 	let localPath = `${process.cwd()}/data/images/${nameOfShow.replace(/ /g, '-')}.jpg`; // Path for file
 	fs.exists(localPath, function (exists) {
 		if (!exists) {

@@ -164,18 +164,12 @@ exports.addShow = function addShow(newShow) {
 		active : newShow.active
 	}
 	saveShows();
-	toaster.showToast(`${newShow.nameOfShow} successfully added to list!`);
 }
 
 // Delete a show from the show list
 exports.removeShow = function removeShow(showName) {
 	delete showList[showName];
 	saveShows();
-}
-
-// TODO Edit Show
-exports.showEdit = function showEdit(name, newData) {
-
 }
 
 exports.toggleActive = function toggleActive(showName) {

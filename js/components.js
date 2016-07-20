@@ -113,10 +113,11 @@ exports.buildBatteryLevel = function buildBatteryLevel(batteryLevel) {
 
 // Build new/edit show dialog box
 exports.buildDialog = function buildDialog(showName) {
+	let showInfo;
 	if (showName) {
 		showInfo = t.getShow(showName);
 	}
-	let dialog = `<div class='setting' id='dialog'>
+	return `<div class='setting' id='dialog'>
 	<div class='title'><span>${showName ? 'Editing ' + showName : 'Add new show'}</span>
 		<div class='close-dialog' id='close-btn'><i class='fa fa-times-circle-o'></i></div>
 	</div>
@@ -124,25 +125,29 @@ exports.buildDialog = function buildDialog(showName) {
 		<div class='input-row'>
 			<label>Show Name</label>
 			<span id='request-status'><i class='fa fa-circle-o-notch fa-spin'></i></span>
-			<input name='show-name' type='text' placeholder='Name of show'>
+			<input name='show-name' type='text' placeholder='Name of show'${showName ? `value="${showName}"` : ' '}>
 		</div>
 		<div class='input-row'>
-			<label>Next Episode (S##E##)</label><input name='next-episode' type='text' placeholder='S01E01'>
+			<label>Next Episode (S##E##)</label>
+			<input name='next-episode' type='text' placeholder='S01E01'${showName ? `value="${showInfo.nextEpisode}"` : ' '}>
 		</div>
 		<div class='input-row'>
-			<label>Air Day</label><input name='air-day' type='text' placeholder='Wednesday'>
+			<label>Air Day</label>
+			<input name='air-day' type='text' placeholder='Wednesday'${showName ? `value="${showInfo.airDay}"` : ' '}>
 		</div>
 		<div class='input-row'>
-			<label>Air Time</label><input name='air-time' type='time' placeholder='22:00'>
+			<label>Air Time</label>
+			<input name='air-time' type='time' placeholder='22:00'${showName ? `value="${showInfo.airTime}"` : ' '}>
 		</div>
 		<div class='input-row'>
-			<label>Airing Timezone</label><input name='timezone' type='text' placeholder='America/New York'>
+			<label>Airing Timezone</label>
+			<input name='timezone' type='text' placeholder='America/New York'${showName ? `value="${showInfo.timezone}"` : ' '}>
 		</div>
 		<div class='input-row'>
 				<label>Currently Airing</label>
 				<form>
-					<input name='active' type='radio' value='1' checked required>Yes
-					<input name='active' type='radio' value='0' required>No
+					<input name='active' type='radio' value='1'${showName ? showInfo.active ? 'checked' : ' ' : 'checked'}>Yes
+					<input name='active' type='radio' value='0'${showName ? showInfo.active ? ' ' : 'checked' : ' '}>No
 				</form>
 		</div>
 		<div class='dialog-buttons'>
@@ -150,7 +155,6 @@ exports.buildDialog = function buildDialog(showName) {
 			<button class='button' id='save-btn'>Save</button>
 		</div>
 	</div>`;
-	return dialog;
 }
 
 // Build settings page

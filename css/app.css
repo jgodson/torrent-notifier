@@ -474,6 +474,7 @@ body {
   margin: auto;
   width: 500px;
   height: 400px;
+  box-shadow: 8px 8px 20px black;
 }
 
 #dialog .input-row {

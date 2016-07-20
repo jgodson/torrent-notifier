@@ -48,7 +48,8 @@ $(document).on('click', '.infoButton', function() {
 		}
 	}
 	else if (this.matches('.edit')) {
-		// TODO Make an edit page
+		$backdrop.fadeIn();
+		$('#changeContainer').html(uiComp.buildDialog(actionItem));
 	}
 	else {
 		t.toggleActive(actionItem);
@@ -83,22 +84,32 @@ $(document).on('click', '#save-btn', function () {
 		timezone : $('input[name="timezone"]').val() || 'America/New York',
 		active : $('input[name="active"]:checked').val() == true ? true : false
 	}
-	t.addShow(newShow);
-	if (currentImageURL) {
-		utils.getImage(newShow.nameOfShow, currentImageURL, function() {
+	if(!t.getShow(newShow.nameOfShow)) {
+		t.addShow(newShow);
+		toaster.showToast(`${newShow.nameOfShow} successfully added to list!`);
+		if (currentImageURL) {
+			utils.getImage(newShow.nameOfShow, currentImageURL, function() {
+				uiComp.buildShow(newShow.nameOfShow, newShow, function (newShowHTML) {
+					$('#show-list').append(newShowHTML);
+					$backdrop.fadeOut();
+				});
+			});
+		}
+		else {
 			uiComp.buildShow(newShow.nameOfShow, newShow, function (newShowHTML) {
 				$('#show-list').append(newShowHTML);
 				$backdrop.fadeOut();
 			});
-		});
+		}
 	}
 	else {
-		uiComp.buildShow(newShow.nameOfShow, newShow, function (newShowHTML) {
-			$('#show-list').append(newShowHTML);
-			$backdrop.fadeOut();
-		});
+		t.emitMessage(`Edit of ${newShow.nameOfShow} was successful`);
+		t.addShow(newShow);
+		toaster.showToast(`Changed saved!`);
+		$backdrop.fadeOut();
 	}
 });
+
 
 // Close toast notification
 $(document).on('click', '.close', function() {
