@@ -117,7 +117,8 @@ $(document).on('click', '#save-btn', function () {
 		timezone : $('input[name="timezone"]').val().trim() || 'America/New_York',
 		active : $('input[name="active"]:checked').val() == true ? true : false
 	}
-	// Validation
+
+	// New/Edit show validation
 	if (newShow.nameOfShow.trim().length < 4) {
 		$error.css('visibility', 'visible');
 		$error.text('Show name is invalid');
@@ -138,7 +139,6 @@ $(document).on('click', '#save-btn', function () {
 			return;
 		}
 	});
-	console.log(VALID_TIMEZONES.includes(newShow.timezone));
 	if (!VALID_TIMEZONES.includes(newShow.timezone)) {
 		$error.css('visibility', 'visible');
 		$error.text('Timezone is not valid');

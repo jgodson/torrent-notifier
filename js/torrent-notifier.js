@@ -44,6 +44,7 @@ function parseData(data, currentShow) {
 		// Loop through the results for this show
 		console.log(data);
 		for(let i = Object.keys(data).length - 1 ; i > 0 ; i--) {
+			console.log(data[i].title);
 			// Loop through search terms to see if is in the title of this result
 			for(let term = 0; term < searchTerms.length ; term++) {
 				if (data[i].title.indexOf(searchTerms[term]) > 0) {
@@ -61,7 +62,6 @@ function parseData(data, currentShow) {
 					return;
 				}
 			}
-			console.log(i);
 		}
 		return newEpisodeFound;
 	})(data);
