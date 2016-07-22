@@ -4,7 +4,7 @@ const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
-//require('electron-reload')(__dirname);
+require('electron-reload')(__dirname);
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -12,7 +12,7 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 1024, height: 768, icon:`${__dirname}/data/images/icons/app-icon-lg.png` });
+  mainWindow = new BrowserWindow({ width: 1024, height: 768, icon:`${__dirname}/data/icons/app-icon-lg.png` });
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/views/index.html`);
@@ -50,6 +50,3 @@ app.on('activate', function() {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

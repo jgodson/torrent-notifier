@@ -8,7 +8,7 @@ const Tray = electron.Tray;
 let appIcon = null;
 
 ipc.on('put-in-tray', function (event) {
-  const iconName = process.platform === 'win32' ? '../data/images/app-icon-md.png' : '../data/images/app-icon-sm.png';
+  const iconName = process.platform === 'win32' ? '../data/icons/app-icon-md.png' : '../data/icons/app-icon-sm.png';
   const iconPath = path.join(__dirname, iconName);
   
   // Check to make sure app icon does not exist so we don't make more than one (Great for electron-reload)

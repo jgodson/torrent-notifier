@@ -5,10 +5,12 @@ const t = require('./torrent-notifier.js');
 const moment = require('moment');
 const settings = require('./settings.js');
 
+// Image src to use when no image found
 const DEFAULT_IMAGE = `${process.cwd()}/data/images/noimage.jpg`;
 
 var exports = {};
 
+// Build a single show listing
 function buildShow(showName, currentShow, next) {
 	utils.getImage(showName, null, function(err, image) {
 		if (err) {
@@ -17,7 +19,9 @@ function buildShow(showName, currentShow, next) {
 		next(`<div class='showListing'><img src='${image}' />
 	<div class='info' data='${showName}'>
 		<div class='showTitle'>${showName}</div>
-		<div class='infoButton activeButton${currentShow.active ? ' active' : ''}' title="Toggle Active"><i class="fa fa-star"></i></div>
+		<div class='infoButton activeButton${currentShow.active ? ' active' : ''}' title="Toggle Active">
+			<i class="fa fa-star"></i>
+		</div>
 		<div class='infoButton edit' title="Edit Show"><i class="fa fa-pencil"></i></div>
 		<div class='infoButton delete' title="Delete Show"><i class="fa fa-trash-o"></i></div>
 		<div class='downloadButton' title="Check Now"><i class='fa fa-cloud-download'></i></div>
@@ -27,6 +31,7 @@ function buildShow(showName, currentShow, next) {
 }
 exports.buildShow = buildShow;
 
+// Build show list collection page and return it 
 exports.buildShowList = function buildShowList (next) {
 	let htmlList = "";
 	let showList = t.getShowList();
@@ -76,8 +81,9 @@ exports.buildCalendar = function buildCalendar() {
 	let daysInMonth = moment().daysInMonth();
 	let firstWeek = true;
 	let monthStartsOn = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
-	for(let day = 1; day <= daysInMonth;) {
+	for(let day = 1; day < daysInMonth;) {
 		htmlCalendar += "<div class='week'>";
+		// Pad with blank days to make it look a bit better
 		if (firstWeek) {
 			for (let numSpaces = monthStartsOn; numSpaces > 0; numSpaces--) {
 				htmlCalendar += "<div class='blank'></div>";
@@ -92,17 +98,18 @@ exports.buildCalendar = function buildCalendar() {
 	<div class='showTimeOnDay dayInfo'>${utils.convert12HrTime(showsToday[curr][1], showsToday[curr][0])}</div>`;
 			}
 			htmlCalendar += "</div>";
-			day++;
-			// End loop if we reach the required days in the month (+1 since we increment first)
-			if (day === daysInMonth + 1) {
+			// End loop if we reach the required days in the month
+			if (day === daysInMonth) {
 				break;
 			}
+			day++;
 		}
 		htmlCalendar += "</div>";
 	}
 	return htmlCalendar;
 }
 
+// Build battery indicator html and return
 exports.buildBatteryLevel = function buildBatteryLevel(batteryLevel) {
 	batteryLevel *= 100;
 	batteryLevel = Math.round(batteryLevel);
@@ -159,7 +166,7 @@ exports.buildDialog = function buildDialog(showName) {
 	</div>`;
 }
 
-// Build settings page
+// Build settings page and return
 exports.buildSettings = function buildSettings() {
 	let settingsHtml = "";
 	let allSettings = settings.getAllSettings();
