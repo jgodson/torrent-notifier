@@ -20,6 +20,7 @@ function buildShow(showName, currentShow, next) {
 		<div class='infoButton activeButton${currentShow.active ? ' active' : ''}' title="Toggle Active"><i class="fa fa-star"></i></div>
 		<div class='infoButton edit' title="Edit Show"><i class="fa fa-pencil"></i></div>
 		<div class='infoButton delete' title="Delete Show"><i class="fa fa-trash-o"></i></div>
+		<div class='downloadButton' title="Check Now"><i class='fa fa-cloud-download'></i></div>
 	</div>
 </div>`);
 	});
@@ -150,6 +151,7 @@ exports.buildDialog = function buildDialog(showName) {
 					<input name='active' type='radio' value='0'${showName ? showInfo.active ? ' ' : 'checked' : ' '}>No
 				</form>
 		</div>
+		<div id='dialog-errors'>Next Episode format incorrect</div>
 		<div class='dialog-buttons'>
 			<button class='button close-dialog' id='cancel-btn'>Cancel</button>
 			<button class='button' id='save-btn'>Save</button>

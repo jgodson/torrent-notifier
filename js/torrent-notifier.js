@@ -35,26 +35,33 @@ var exports = {};
 // ---- Event Listeners ----
 // Triggered when request has new results from API
 function parseData(data, currentShow) {
-	let newEpisodeFound = false;
-	let altSearchTerm = showList[currentShow].nextEpisode.split('E').join(' ')
-		.replace('S', '').replace(' ', 'x').replace('0', '');
 	return (function(data) {
+		let newEpisodeFound = false;
+		let searchTerms = [showList[currentShow].nextEpisode];
+		searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
+			.replace('S', '').replace(' ', 'x').replace('0', '');
+		searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
 		// Loop through the results for this show
-		for(let i = Object.keys(data).length - 1; i > 0; i--) {
-			console.log(i);
-			// Check to see if the new episode is in the title of this result
-			if (data[i].title.indexOf(showList[currentShow].nextEpisode) !== -1 || data[i].title.indexOf(altSearchTerm) !== -1) {
-				emitMessage(`New Episode of ${currentShow} found!`);
-				data[i].showName = currentShow;
+		console.log(data);
+		for(let i = Object.keys(data).length - 1 ; i > 0 ; i--) {
+			// Loop through search terms to see if is in the title of this result
+			for(let term = 0; term < searchTerms.length ; term++) {
+				if (data[i].title.indexOf(searchTerms[term]) > 0) {
+					emitMessage(`New Episode of ${currentShow} found!`);
+					console.log(`${searchTerms[term]} matched ${data[i].title}`);
+					data[i].showName = currentShow;
 
-				// Triger the desktop notification
-				newEpisodeAlert(data[i]);
-				newEpisodeFound = true;
+					// Triger the desktop notification
+					newEpisodeAlert(data[i]);
+					newEpisodeFound = true;
 
-				// Update nextEpisode to what should be the next episode
-				showList[currentShow].nextEpisode = incrementEpisode(showList[currentShow].nextEpisode);
-				saveShows();
+					// Update nextEpisode to what should be the next episode
+					showList[currentShow].nextEpisode = incrementEpisode(showList[currentShow].nextEpisode);
+					saveShows();
+					return;
+				}
 			}
+			console.log(i);
 		}
 		return newEpisodeFound;
 	})(data);
@@ -67,9 +74,9 @@ torrentAlerter.on('message', function(message) {
 });
 
 // Check API for given show name
-exports.checkForNewEpisode = function checkForNewEpisode(show, next) {
+exports.checkForNewEpisode = function checkForNewEpisode(show, type, next) {
 	const settings = require('./settings.js');
-	if (settings.getSetting('Check For Torrents')) {
+	if (settings.getSetting('Check For Torrents') || type === 'manual') {
 		emitMessage(`Searching for new episodes of ${show}...`);
 		// Make request to torrent API
 		request(`https://torrentproject.se/?s=${encodeURIComponent(show)}&out=json&orderby=latest&num=50`, function(err, result) {

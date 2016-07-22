@@ -204,6 +204,8 @@ body {
   margin-left: 20px;
   margin-bottom: 20px;
   margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 8px 8px 8px grey;
 }
 
 .showListing img {
@@ -253,7 +255,7 @@ body {
 .activeButton {
   position: absolute;
   bottom: 165px;
-  left: 25px;
+  left: 26px;
 }
 
 .activeButton:hover {
@@ -270,8 +272,12 @@ body {
   color: gold;
 }
 
+.activeButton > i:hover {
+  transform: scale(1.1);
+}
+
 .activeButton > i:active {
-  transform: scale(1.4, 1.4);
+  transform: scale(1.5);
 }
 
 .delete {
@@ -284,6 +290,21 @@ body {
   left: 15px;
 }
 
+.downloadButton {
+  position: absolute;
+  bottom: 5px;
+  left: 83px;
+  font-size: 30px;
+  color: #9cc2ff;
+  transition: all 250ms;
+  cursor: pointer;
+}
+
+.downloadButton:hover {
+  transform: scale(1.2);
+}
+
+/* Calendar Page */
 #calendar-wrapper {
   margin: auto;
   margin-top: 31px;
@@ -344,7 +365,7 @@ body {
 
 .showOnDay {
   margin-top: 2px;
-  background-color: cornflowerblue;
+  background-color: #2eddf1;
 }
 
 .showOnDay.open {
@@ -353,7 +374,7 @@ body {
 }
 
 .showTimeOnDay {
-  background-color: cornflowerblue;
+  background-color: #4fff9f;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   display: none;
@@ -404,8 +425,9 @@ body {
   left: 20px;
 }
 
-#addShowButton:hover{
+#addShowButton:hover {
   transform: scale(1.2, 1.2);
+  box-shadow: 10px 15px 15px #888888;
 }
 
 #monthName {
@@ -540,6 +562,19 @@ body {
   left: 170px;
   color: slateblue;
   display: none;
+}
+
+#dialog-errors {
+  color: red;
+  position: absolute;
+  left: 15px;
+  bottom: 20px;
+  visibility: hidden;
+}
+
+@keyframes scaleIn {
+  from {transform: scale(2)}
+  to {transform: scale(1)}
 }
 
 /* ---- On/Off Button ---- */

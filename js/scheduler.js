@@ -6,8 +6,8 @@ const tz = require('moment-timezone');
 const moment = require('moment');
 const LOCAL_TIMEZONE = moment.tz.guess();
 
-// Interval to recheck when new episode isn't yet found mins * seconds * milliseconds
-const CHECK_INTERVAL = 30 * 60 * 1000
+// Interval to recheck when new episode isn't yet found 
+const CHECK_INTERVAL = 5; // minutes
 // How many times to check torrent API before giving up
 const NUMBER_OF_RETRIES = 4;
 
@@ -27,26 +27,28 @@ var exports = {};
 let scheduledJobs = {};
 
 // Check again if no show was found
-let checkIntervals = {};
+let intervalJobs = {};
 
 function scheduleShow(nameOfShow) {
 	let show = t.getShow(nameOfShow);
 	let timeParts = show.airTime.split(':');
-	let offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(Date.now()) 
-		- moment.tz.zone(show.timezone).offset(Date.now())) / 60;
-	timeParts[0] -= offset + 1; // Show won't be ready until at least an hour after airing
+	let timeNow = Date.now();
+	let offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(timeNow) 
+		- moment.tz.zone(show.timezone).offset(timeNow)) / 60;
+	timeParts[0] = parseInt(timeParts[0]) - offset + 1; // Show won't be ready until at least an hour after airing
+	timeParts[1] = parseInt(timeParts[1]) + 10; // 1 hour 10 mins after airing show may be ready
 	scheduledJobs[nameOfShow] = {};
 	show.airDay.forEach( (day) => {
 		addJob(nameOfShow, timeParts[0], timeParts[1], day);
+		t.emitMessage(`Scheduled check for ${nameOfShow} for ${day} @ ${timeParts[0]}:${timeParts[1]}`);
 	});
-	t.emitMessage(`Scheduled check for ${nameOfShow}.`);
 }
 exports.scheduleShow = scheduleShow;
 
 function addJob(nameOfShow, hour, minute, dayofweek) {
 	let time = `${minute} ${hour} * * ${DAY_OF_WEEK[dayofweek]}`;
 	scheduledJobs[nameOfShow][dayofweek] = schedule.scheduleJob(time, function(){
-		t.checkForNewEpisode(nameOfShow, function (foundNewEpisode) {
+		t.checkForNewEpisode(nameOfShow, 'auto', function (foundNewEpisode) {
 			if (!foundNewEpisode) {
 				addIntervalCheck(nameOfShow);
 			}
@@ -55,7 +57,7 @@ function addJob(nameOfShow, hour, minute, dayofweek) {
 }
 
 function cancelShow(nameOfShow) {
-	t.emitMessage(`Cancelling schedule for ${nameOfShow}.`);
+	t.emitMessage(`Cancelling all jobs for ${nameOfShow}.`);
 	t.getShow(nameOfShow).airDay.forEach( (day) => {
 			scheduledJobs[nameOfShow][day].cancel();
 	});
@@ -65,28 +67,31 @@ function cancelShow(nameOfShow) {
 exports.cancelShow = cancelShow;
 
 function clearIntervalCheck(nameOfShow) {
-	t.emitMessage(`Clearing interval checks for ${nameOfShow}.`);
-	if (typeof checkIntervals[nameOfShow] !== 'undefined') {
-		clearInterval(checkIntervals[nameOfShow].checks);
-		delete checkIntervals[nameOfShow];
+	t.emitMessage(`Clearing interval job for ${nameOfShow}.`);
+	if (typeof intervalJobs[nameOfShow] !== 'undefined') {
+		intervalJobs[nameOfShow].nextCheck.cancel();
+		delete intervalJobs[nameOfShow];
 	}
 }
 
 function addIntervalCheck(nameOfShow) {
-	t.emitMessage(`Adding interval check for ${nameOfShow}.`);
-	checkIntervals[nameOfShow] = {
+	t.emitMessage(`Adding interval job for ${nameOfShow}.`);
+	intervalJobs[nameOfShow] = {
 		retries : NUMBER_OF_RETRIES
 	}
-	checkIntervals[nameOfShow].checks = setInterval(function (nameOfShow) {
-		t.emitMessage(`Checking for ${nameOfShow}. Retries left: ${checkIntervals[nameOfShow].retries}...`)
-		t.checkForNewEpisode(nameOfShow, function(foundNewEpisode) {
+	let time = moment().add(CHECK_INTERVAL, 'minutes');
+	let job_time = `${time.minute()} ${time.hour()} * * ${time.day()}`;
+	console.log(job_time);
+	intervalJobs[nameOfShow].nextCheck = schedule.scheduleJob(job_time, function(){
+		t.emitMessage(`Checking for ${nameOfShow}. Retries left: ${intervalJobs[nameOfShow].retries}...`);
+		t.checkForNewEpisode(nameOfShow, 'auto', function (foundNewEpisode) {
 			checkIntervals[nameOfShow].retries--;
 			if (foundNewEpisode || checkIntervals[nameOfShow].retries === 0) {
 				clearIntervalCheck(nameOfShow);
 				return;
 			}
 		});
-	}, CHECK_INTERVAL);
+	});
 }
 
 exports.scheduleAll = function scheduleAll() {
