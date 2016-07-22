@@ -111,7 +111,7 @@ $(document).on('click', '#save-btn', function () {
 	let dayArray = $('input[name="air-day"]').val().toLowerCase().replace(/ /g, '').split(',');
 	let newShow = {
 		nameOfShow : $('input[name="show-name"]').val().trim(),
-		nextEpisode : $('input[name="next-episode"]').val().trim() || 'S01E01',
+		nextEpisode : $('input[name="next-episode"]').val().toUpperCase().trim() || 'S01E01',
 		airDay : dayArray,
 		airTime : $('input[name="air-time"]').val(),
 		timezone : $('input[name="timezone"]').val().trim() || 'America/New_York',

@@ -42,7 +42,7 @@ function parseData(data, currentShow) {
 			.replace('S', '').replace(' ', 'x').replace('0', '');
 		searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
 		// Loop through the results for this show
-		console.log(data);
+ 
 		for(let i = Object.keys(data).length - 1 ; i > 0 ; i--) {
 			console.log(data[i].title);
 			// Loop through search terms to see if is in the title of this result
@@ -59,7 +59,7 @@ function parseData(data, currentShow) {
 					// Update nextEpisode to what should be the next episode
 					showList[currentShow].nextEpisode = incrementEpisode(showList[currentShow].nextEpisode);
 					saveShows();
-					return;
+					break;
 				}
 			}
 		}

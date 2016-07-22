@@ -14,14 +14,19 @@ ipc.on('put-in-tray', function (event) {
   // Check to make sure app icon does not exist so we don't make more than one (Great for electron-reload)
   if (!appIcon) {
     appIcon = new Tray(iconPath);
-    const contextMenu = Menu.buildFromTemplate([{
-      label: 'Remove',
-      click: function () {
-        event.sender.send('tray-removed');
-        appIcon.destroy();
-        appIcon = null;
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label : 'Torrent Notifier Running'
+      },
+      {
+        label : 'Remove Tray Icon',
+        click : function() {
+          event.sender.send('tray-removed');
+          appIcon.destroy();
+          appIcon = null;
+        }
       }
-    }]);
+    ]);
     appIcon.setToolTip('Torrent Notifier');
     appIcon.setContextMenu(contextMenu);
   }

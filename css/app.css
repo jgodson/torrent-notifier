@@ -190,7 +190,7 @@ body {
   width: 100%;
   overflow-y: auto;
   margin: auto;
-  margin-top: 11px;
+  padding-top: 11px;
 }
 
 #show-list > p {

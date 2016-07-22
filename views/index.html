@@ -48,6 +48,9 @@
 <script>
   const $ = jQuery = require("jquery");
   const uiComp = require('../js/components.js');
+  const Searcher = require('../js/searcher.js');
+  const moment = require('moment-timezone');
+  const VALID_TIMEZONES = moment.tz.names();
 
   require('../js/app.js');
   require('../js/interactions.js');
