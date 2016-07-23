@@ -130,15 +130,18 @@ function download(url, filePath, next) {
 	}
 }
 
-function convert12HrTime(givenTime, showName) {
-	let show = t.getShow(showName);
+function convert12HrTime(givenTime, showName, useOffset = true) {
 	let now = Date.now();
-	let offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(now) 
-		- moment.tz.zone(show.timezone).offset(now)) / 60;
+	let offset = null;
+	if (useOffset) {
+		let show = t.getShow(showName);
+		offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(now) 
+			- moment.tz.zone(show.timezone).offset(now)) / 60;
+	}
 	let time = givenTime.split(':');
 	let hour = time[0] > 12 ? time[0] - 12 : time[0];
 	let minute = time[1];
-	hour -= offset;
+	hour -= offset || 0;
 	return `${hour}:${minute} ${time[0] > 12 ? 'PM' : 'AM'}`
 }
 module.exports.convert12HrTime = convert12HrTime;

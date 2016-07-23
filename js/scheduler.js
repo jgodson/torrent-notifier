@@ -3,6 +3,7 @@
 const t = require('./torrent-notifier.js');
 const schedule = require('node-schedule');
 const tz = require('moment-timezone');
+const utils = require('./utils.js');
 const moment = require('moment');
 const LOCAL_TIMEZONE = moment.tz.guess();
 
@@ -41,7 +42,8 @@ function scheduleShow(nameOfShow) {
 	scheduledJobs[nameOfShow] = {};
 	show.airDay.forEach( (day) => { // Add each airing day of show to schedule
 		addJob(nameOfShow, timeParts[0], timeParts[1], day);
-		t.emitMessage(`Scheduled check for ${nameOfShow} for ${day} @ ${timeParts[0]}:${timeParts[1]}`);
+		t.emitMessage(`Scheduled check for ${nameOfShow} for ${day} @ ` +
+		`${utils.convert12HrTime(`${timeParts[0]}:${timeParts[1]}`, null, false)}`);
 	});
 }
 exports.scheduleShow = scheduleShow;

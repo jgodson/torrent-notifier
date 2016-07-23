@@ -149,7 +149,7 @@ exports.buildDialog = function buildDialog(showName) {
 		</div>
 		<div class='input-row'>
 			<label>Airing Timezone</label>
-			<input name='timezone' type='text' placeholder='America/New York'${showName ? `value="${showInfo.timezone}"` : ' '}>
+			<input name='timezone' type='text' placeholder='Start typing to search...'${showName ? `value="${showInfo.timezone}"` : ' '}>
 		</div>
 		<div class='input-row'>
 				<label>Currently Airing</label>

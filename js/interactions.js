@@ -5,10 +5,18 @@ const uiComp = require('./components.js');
 const toaster = require('./toaster.js');
 const utils = require('./utils.js');
 const scheduler = require('./scheduler.js');
+const Searcher = require('./searcher.js').Searcher;
 const moment = require('moment-timezone');
 
 const VALID_TIMEZONES = moment.tz.names();
 const VALID_DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+const searcherOptions = {
+  source : VALID_TIMEZONES,
+	start_search : 1,
+	max_results : 15,
+	scrollable : true
+}
+let timezoneSearcher = new Searcher(searcherOptions);
 
 let currentImageURL = null; // For tempory saving after getting image from tvmaze api
 const $backdrop = $('#backdrop');
@@ -76,6 +84,7 @@ $(document).on('click', '.infoButton', function() {
 		// Build edit dialog
 		$backdrop.fadeIn();
 		$('#changeContainer').html(uiComp.buildDialog(actionItem));
+		timezoneSearcher.initialize($('input[name="timezone"]'));
 	}
 	else {
 		// Make active in Show List and add to scheduler jobs
@@ -89,6 +98,7 @@ $(document).on('click', '.infoButton', function() {
 $(document).on('click', '#addShowButton', function() {
 	$backdrop.fadeIn();
 	$('#changeContainer').html(uiComp.buildDialog());
+	timezoneSearcher.initialize($('input[name="timezone"]'));
 });
 
 // Checkbox input changes clicked setting in file
@@ -99,6 +109,7 @@ $(document).on('click', '.setting input[type="checkbox"]', function() {
 // Cancel edit/new show dialog
 $(document).on('click', '.close-dialog', function() {
 	$backdrop.fadeOut();
+	timezoneSearcher.stop();
 });
 
 // Save edits/new show
@@ -183,7 +194,7 @@ $(document).on('click', '#save-btn', function () {
 
 // Get other info automatically after show name entered
 $(document).on('blur', 'input[name="show-name"]', function () {
-	if(settings.getSetting('Auto Show Search')) {
+	if(settings.getSetting('Auto Show Search') && $('input[name="show-name"]').val().length >= 4) {
 		$('#request-status').fadeIn();
 		utils.getInfo($('input[name="show-name"]').val(), function(err, showData) {
 			if (!err) {
