@@ -9,14 +9,14 @@ const Searcher = require('./searcher.js').Searcher;
 const moment = require('moment-timezone');
 
 const VALID_TIMEZONES = moment.tz.names();
-const VALID_DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-const searcherOptions = {
+const VALID_DAYS = "Monday Tuesday Wednesday Thursday Friday Saturday Sunday";
+let searcherOptions = {
   source : VALID_TIMEZONES,
-	start_search : 1,
 	max_results : 15,
 	scrollable : true
 }
 let timezoneSearcher = new Searcher(searcherOptions);
+let daySearcher = new Searcher({ source: VALID_DAYS.split(' '), max_results: 7 });
 
 let currentImageURL = null; // For tempory saving after getting image from tvmaze api
 const $backdrop = $('#backdrop');
@@ -85,6 +85,7 @@ $(document).on('click', '.infoButton', function() {
 		$backdrop.fadeIn();
 		$('#changeContainer').html(uiComp.buildDialog(actionItem));
 		timezoneSearcher.initialize($('input[name="timezone"]'));
+		daySearcher.initialize($('input[name="air-day"]'));
 	}
 	else {
 		// Make active in Show List and add to scheduler jobs
@@ -99,6 +100,7 @@ $(document).on('click', '#addShowButton', function() {
 	$backdrop.fadeIn();
 	$('#changeContainer').html(uiComp.buildDialog());
 	timezoneSearcher.initialize($('input[name="timezone"]'));
+	daySearcher.initialize($('input[name="air-day"]'));
 });
 
 // Checkbox input changes clicked setting in file
@@ -110,6 +112,7 @@ $(document).on('click', '.setting input[type="checkbox"]', function() {
 $(document).on('click', '.close-dialog', function() {
 	$backdrop.fadeOut();
 	timezoneSearcher.stop();
+	daySearcher.stop();
 });
 
 // Save edits/new show
@@ -143,7 +146,7 @@ $(document).on('click', '#save-btn', function () {
 		return;
 	}
 	newShow.airDay.forEach( function(day) {
-		if (!VALID_DAYS.includes(day)) {
+		if (!VALID_DAYS.toLowerCase().split(' ').includes(day)) {
 			$error.css('visibility', 'visible');
 			$error.text(`${day} is not valid`);
 			$error.css('animation', 'scaleIn 600ms');

@@ -15,12 +15,6 @@ function showToast(message) {
 		$toaster.addClass('shown');
 		timer = setTimeout( () => {
 			hideToast();
-			if (backlog.length > 0) {
-				// Wait for hide animation to finish
-				setTimeout( () => {
-					showToast(backlog.shift());
-				}, 400);
-			}
 		}, 10000);
 		shown = true;
 	}
@@ -31,5 +25,11 @@ function hideToast() {
 	clearTimeout(timer);
 	shown = false;
 	$toaster.removeClass('shown');
+	if (backlog.length > 0) {
+		// Wait for hide animation to finish
+		setTimeout( () => {
+			showToast(backlog.shift());
+		}, 400);
+	}
 }
 module.exports.hideToast = hideToast;

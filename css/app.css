@@ -240,6 +240,7 @@ body {
   transition: all 250ms;
   bottom: 20px;
   cursor: pointer;
+  border: 1px solid black;
 }
 
 .infoButton:hover {
@@ -413,9 +414,10 @@ body {
   height: 80px;
   border-radius: 40px;
   position: fixed;
+  border: 1px solid black;
   bottom: 50px;
   right: 50px;
-  background-color: deepskyblue;
+  background-color: lightgreen;
   box-shadow: 10px 10px 5px #888888;
   transition: all 500ms;
   cursor: pointer;
@@ -431,6 +433,7 @@ body {
 #addShowButton:hover {
   transform: scale(1.2, 1.2);
   box-shadow: 10px 15px 15px #888888;
+  background-color: #5f6;
 }
 
 #monthName {
@@ -675,4 +678,9 @@ label > .fa-power-off {
   right: 85px;
   height: 100%;
   left: 50px;
+}
+
+/* Remove outline on input elemets */
+input:focus {
+    outline: none;
 }

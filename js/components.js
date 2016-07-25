@@ -141,11 +141,11 @@ exports.buildDialog = function buildDialog(showName) {
 		</div>
 		<div class='input-row'>
 			<label>Air Day</label>
-			<input name='air-day' type='text' placeholder='Wednesday'${showName ? `value="${showInfo.airDay}"` : ' '}>
+			<input name='air-day' type='text' placeholder='Monday, Wednesday, Friday'${showName ? `value="${showInfo.airDay}"` : ' '}>
 		</div>
 		<div class='input-row'>
 			<label>Air Time</label>
-			<input name='air-time' type='time' placeholder='22:00'${showName ? `value="${showInfo.airTime}"` : ' '}>
+			<input name='air-time' type='time' placeholder='8:00PM'${showName ? `value="${showInfo.airTime}"` : ' '}>
 		</div>
 		<div class='input-row'>
 			<label>Airing Timezone</label>
