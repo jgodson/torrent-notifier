@@ -28,11 +28,11 @@
 >Settings and fancy notifications shown here. (New torrent notifications are native, not in-app)
 
 ###Settings Descriptions:
-Tray Icon: Show tray icon or not. (Really does nothing at the moment, besides a reminder that app is running)
-Notifications: Native notifications of new show available
-Automatic Downloads: Opens magnet link as soon as new show is found. If you turn off the dialog in your torrent client, you   can automate the downloads of your shows!
-Auto Show Search: When enabled, it will try to get show info from the tvmaze API after filling out the Show Name field.
-Check For Torrents: This enables or disables automatic checking for torrents after new show should be available.
+**Tray Icon**: Show tray icon or not. (Really does nothing at the moment, besides a reminder that app is running)
+**Notifications**: Native notifications of new show available
+**Automatic Downloads**: Opens magnet link as soon as new show is found. If you turn off the dialog in your torrent client, you can automate the downloads of your shows!
+**Auto Show Search**: When enabled, it will try to get show info from the tvmaze API after filling out the Show Name field.
+**Check For Torrents**: This enables or disables automatic checking for torrents after new show should be available.
 
 ###This project uses the following API's
 http://www.tvmaze.com/api
