@@ -22,7 +22,7 @@
 >Calendar view shows you the actual air day and time of your shows.
 
 ![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.50.46-PM-1024x650.png)
->Manual checking for torrents. Next episode to look for is automatically adjusted when current episode is found. If you are >behind, it should find the past few episodes.
+>Manual checking for torrents. Next episode to look for is automatically adjusted when current episode is found. If you are behind, it should find the past few episodes.
 
 ![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.10-PM-1024x650.png)
 >Settings and fancy notifications shown here. (New torrent notifications are native, not in-app)
@@ -36,4 +36,5 @@ Check For Torrents: This enables or disables automatic checking for torrents aft
 
 ###This project uses the following API's
 http://www.tvmaze.com/api
+
 https://torrentproject.se/api
