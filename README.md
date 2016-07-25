@@ -9,7 +9,7 @@
 >Hover over a show to show the options.
 
 ![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.17.04-PM-1024x650.png)
->New/Edit show dialog. Attemps auto population of fields and download of poster art after filling in Show Name.
+>New/Edit show dialog. Attempts auto population of fields and download of poster art after filling in Show Name.
 >This uses the tvmaze API http://www.tvmaze.com/api
 
 ![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.17.57-PM-1024x650.png)
@@ -25,7 +25,7 @@
 >Manual checking for torrents. Next episode to look for is automatically adjusted when current episode is found. If you are >behind, it should find the past few episodes.
 
 ![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.10-PM-1024x650.png)
->Settings and fancy notifications shown here. (New norrent notifications are native, not in-app)
+>Settings and fancy notifications shown here. (New torrent notifications are native, not in-app)
 
 ###Settings Descriptions:
 Tray Icon: Show tray icon or not. (Really does nothing at the moment, besides a reminder that app is running)
