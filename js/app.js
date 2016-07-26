@@ -16,10 +16,10 @@ scheduler.scheduleAll();
 
 // Show some important info when first starting app, depending on settings
 if (settings.getSetting('Automatic Downloads')) {
-	toaster.showToast('Automatic Downloads are on!');
+  toaster.showToast('Automatic Downloads are on!');
 }
 if (!settings.getSetting('Notifications')) {
-	toaster.showToast('Notifications are turned off!');
+  toaster.showToast('Notifications are turned off!');
 }
 
 // Do initial connection check
@@ -31,17 +31,17 @@ window.addEventListener('offline', () => utils.updateConnection(false));
 
 // Add Tray Icon if setting is set
 if (settings.getSetting('Tray Icon')) {
-	ipc.send('put-in-tray');
+  ipc.send('put-in-tray');
 }
 
 // Check if device has a battery
 navigator.getBattery().then((battery) => {
-	// If no battery, do not add battery indicator
-	if (battery) {
-		$('#battery').html(uiComp.buildBatteryLevel(battery.level));
-		battery.addEventListener('levelchange', () => {
-			$('#battery').html(uiComp.buildBatteryLevel(battery.level));
-		});
-	}
+  // If no battery, do not add battery indicator
+  if (battery) {
+    $('#battery').html(uiComp.buildBatteryLevel(battery.level));
+    battery.addEventListener('levelchange', () => {
+      $('#battery').html(uiComp.buildBatteryLevel(battery.level));
+    });
+  }
 });
 
