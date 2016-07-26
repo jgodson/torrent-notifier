@@ -37,22 +37,31 @@ var exports = {};
 function parseData(data, currentShow) {
 	return (function(data) {
 		let newEpisodeFound = false;
+		// Set up what we are searching for
 		let searchTerms = [showList[currentShow].nextEpisode];
 		searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
 			.replace('S', '').replace(' ', 'x').replace('0', '');
 		searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
 		// Loop through the results for this show
- 
 		for(let i = Object.keys(data).length - 1 ; i > 0 ; i--) {
 			console.log(data[i].title);
+			// If a new episode was found, update the search terms
+			if (newEpisodeFound) {
+				searchTerms = [showList[currentShow].nextEpisode];
+				searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
+					.replace('S', '').replace(' ', 'x').replace('0', '');
+				searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
+				emitMessage('Search terms changed!');
+				emitMessage(searchTerms);
+			}
 			// Loop through search terms to see if is in the title of this result
 			for(let term = 0; term < searchTerms.length ; term++) {
 				if (data[i].title.indexOf(searchTerms[term]) > 0) {
 					emitMessage(`New Episode of ${currentShow} found!`);
-					console.log(`${searchTerms[term]} matched ${data[i].title}`);
+					emitMessage(`${searchTerms[term]} matched ${data[i].title}`);
 					data[i].showName = currentShow;
 
-					// Triger the desktop notification
+					// Trigger the desktop notification
 					newEpisodeAlert(data[i]);
 					newEpisodeFound = true;
 
