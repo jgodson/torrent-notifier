@@ -51,8 +51,6 @@ function parseData(data, currentShow) {
         searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
           .replace('S', '').replace(' ', 'x').replace('0', '');
         searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
-        emitMessage('Search terms changed!');
-        emitMessage(searchTerms);
       }
       // Loop through search terms to see if is in the title of this result
       for(let term = 0; term < searchTerms.length ; term++) {

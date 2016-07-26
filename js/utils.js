@@ -110,7 +110,7 @@ function download(url, filePath, next) {
       });
 
       // When response ends, close file and call callback function
-      res.on('end',function(){
+      res.on('end', function(){
         t.emitMessage(`Successfully downloaded image. Size is ${(totalSize / 1024).toFixed(2)} kB`);
         file.end();
         next(null);
