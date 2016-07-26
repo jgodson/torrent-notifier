@@ -1,32 +1,45 @@
-# electron-quick-start
+#This App is still under construction. Needs a few things before I call it V1.0.
 
-**Clone and run for a quick way to see an Electron in action.**
+###Also only tested on OSX 10.11.5 so far. Will test on Windows 10 and 7 once I finish to V1.0 release.
 
-This is a minimal Electron application based on the [Quick Start Guide](http://electron.atom.io/docs/latest/tutorial/quick-start) within the Electron documentation.
+![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.13-PM-1024x650.png)
+>Add all your favourite shows! Poster art is automatically downloaded
 
-**Use this app along with the [Electron API Demos](http://electron.atom.io/#get-started) app for API code examples to help you get started.**
+![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.20-PM-1024x650.png)
+>Hover over a show to show the options.
 
-A basic Electron application needs just these files:
+![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.17.04-PM-1024x650.png)
+>New/Edit show dialog. Attempts auto population of fields and download of poster art after filling in Show Name.
+>This uses the tvmaze API http://www.tvmaze.com/api
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.17.57-PM-1024x650.png)
+>Dropdown menu for selecting timezone and air day
 
-You can learn more about each of these components within the [Quick Start Guide](http://electron.atom.io/docs/latest/tutorial/quick-start).
+![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.13.19-PM-1024x650.png)
+>Logs for info and debugging. You can see the automatically scheduled checks here (App needs to stay running for checks to >run)
 
-## To Use
+![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.00-PM-1024x650.png)
+>Calendar view shows you the actual air day and time of your shows.
 
-To clone and run this repository you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
+![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.50.46-PM-1024x650.png)
+>Manual checking for torrents. Next episode to look for is automatically adjusted when current episode is found. If you are behind, it should find the past few episodes.
 
-```bash
-# Clone this repository
-git clone https://github.com/electron/electron-quick-start
-# Go into the repository
-cd electron-quick-start
-# Install dependencies and run the app
-npm install && npm start
-```
+![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.10-PM-1024x650.png)
+>Settings and fancy notifications shown here. (New torrent notifications are native, not in-app)
 
-Learn more about Electron and its API in the [documentation](http://electron.atom.io/docs/latest).
+###Settings Descriptions:
+**Tray Icon**: Show tray icon or not. (Really does nothing at the moment, besides a reminder that app is running)
 
-#### License [CC0 (Public Domain)](LICENSE.md)
+**Notifications**: Native notifications of new show available
+
+**Automatic Downloads**: Opens magnet link as soon as new show is found. If you turn off the dialog in your torrent client, you can automate the downloads of your shows!
+
+**Auto Show Search**: When enabled, it will try to get show info from the tvmaze API after filling out the Show Name field.
+
+**Check For Torrents**: This enables or disables automatic checking for torrents after new show should be available.
+
+
+###This project uses the following API's
+http://www.tvmaze.com/api
+
+https://torrentproject.se/api
