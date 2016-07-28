@@ -4,8 +4,14 @@
 	width: 100%;
 }
 
-.searcher p:hover, .searcher p.hovered {
+.searcher p:hover {
 	background-color: #abc;
+	border-radius: 8px;
+}
+
+.searcher p:focus {
+	background-color: #abc;
+	outline: none;
 	border-radius: 8px;
 }
 

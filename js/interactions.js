@@ -10,16 +10,24 @@ const moment = require('moment-timezone');
 
 const VALID_TIMEZONES = moment.tz.names();
 const VALID_DAYS = "Monday Tuesday Wednesday Thursday Friday Saturday Sunday";
-let searcherOptions = {
+let tzSearcherOptions = {
   source : VALID_TIMEZONES,
   max_results : 15,
   scrollable : true
 }
-let timezoneSearcher = new Searcher(searcherOptions);
+let timezoneSearcher = new Searcher(tzSearcherOptions);
 let daySearcher = new Searcher({ source: VALID_DAYS.split(' '), max_results: 7 });
 
 let currentImageURL = null; // For tempory saving after getting image from tvmaze api
 const $backdrop = $('#backdrop');
+const stopSearchers = function () {
+  timezoneSearcher.stop();
+  daySearcher.stop();
+}
+const initSearchers = function () {
+  timezoneSearcher.initialize($('input[name="timezone"]'), $backdrop);
+  daySearcher.initialize($('input[name="air-day"]'), $backdrop);
+}
 
 // ---- Animations ----
 // Status dropdown animation
@@ -84,8 +92,7 @@ $(document).on('click', '.infoButton', function() {
     // Build edit dialog
     $backdrop.fadeIn();
     $('#changeContainer').html(uiComp.buildDialog(actionItem));
-    timezoneSearcher.initialize($('input[name="timezone"]'));
-    daySearcher.initialize($('input[name="air-day"]'));
+    initSearchers();
   }
   else {
     // Make active in Show List and add to scheduler jobs
@@ -99,8 +106,7 @@ $(document).on('click', '.infoButton', function() {
 $(document).on('click', '#addShowButton', function() {
   $backdrop.fadeIn();
   $('#changeContainer').html(uiComp.buildDialog());
-  timezoneSearcher.initialize($('input[name="timezone"]'));
-  daySearcher.initialize($('input[name="air-day"]'));
+  initSearchers();
 });
 
 // Checkbox input changes clicked setting in file
@@ -111,8 +117,7 @@ $(document).on('click', '.setting input[type="checkbox"]', function() {
 // Cancel edit/new show dialog
 $(document).on('click', '.close-dialog', function() {
   $backdrop.fadeOut();
-  timezoneSearcher.stop();
-  daySearcher.stop();
+  stopSearchers();
 });
 
 // Save edits/new show
