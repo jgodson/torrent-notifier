@@ -67,7 +67,7 @@ function cancelShow(nameOfShow) {
   t.emitMessage(`Cancelling all jobs for ${nameOfShow}.`);
   t.getShow(nameOfShow).airDay.forEach( (day) => {
     // Make sure that show is scheduled before trying to cancel
-    if (typeof scheduledJobs[nameOfShow][day] !== 'undefined') {
+    if (typeof scheduledJobs[nameOfShow] !== 'undefined') {
       scheduledJobs[nameOfShow][day].cancel();
     }
     else {

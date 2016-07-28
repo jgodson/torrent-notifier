@@ -215,7 +215,7 @@ $(document).on('click', '#save-btn', function () {
     // Remove and reschedule in case of change in air time/day or timezone
     scheduler.cancelShow(newShow.nameOfShow);
     t.addShow(newShow);
-    scheduler.addShow(newShow.nameOfShow);
+    scheduler.scheduleShow(newShow.nameOfShow);
     toaster.showToast(`Changed saved!`);
     $backdrop.fadeOut();
   }
