@@ -215,6 +215,11 @@ exports.loadShowList = function loadShowList() {
   }
 }
 
+// Returns true or false depending if a given show is active or not
+exports.isActive = function isActive(nameOfShow) {
+  return showList[nameOfShow].active;
+}
+
 // Returns name and time (plus timezoen) of show airing (active shows only)
 exports.checkShowsOnDay = function checkShowsOnDay(dayOfWeek) {
   let showsThatDay = [];

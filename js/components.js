@@ -181,11 +181,13 @@ function buildSetting(name) {
   return `<div class='setting'>
     <div class='title'><span>${name}</span></div>
     <div class='body'>
-      <input data-setting='${name}' type='checkbox' class='on-off-button' ${settings.getSetting(name) ? 'checked' : ''}>
-        <label>
-          <i class='fa fa-power-off'></i>
-        </label>
-      </input>
+      <div class='switch-container'>
+        <input data-setting='${name}' type='checkbox' class='on-off-button' ${settings.getSetting(name) ? 'checked' : ''}>
+          <label>
+            <i class='fa fa-power-off'></i>
+          </label>
+        </input>
+      </div>
     </div>
   </div>`;
 }

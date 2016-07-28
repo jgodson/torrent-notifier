@@ -214,6 +214,10 @@ $(document).on('click', '#save-btn', function () {
     t.emitMessage(`Edit of ${newShow.nameOfShow} was successful`);
     // Remove and reschedule in case of change in air time/day or timezone
     scheduler.cancelShow(newShow.nameOfShow);
+    // Change the active toggle star if active status changed
+    if (newShow.active !== t.isActive(newShow.nameOfShow)) { 
+      $(`div[data="${newShow.nameOfShow}"]`).find('.activeButton').toggleClass('active');
+    }
     t.addShow(newShow);
     scheduler.scheduleShow(newShow.nameOfShow);
     toaster.showToast(`Changed saved!`);
