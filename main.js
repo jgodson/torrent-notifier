@@ -4,7 +4,13 @@ const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
-require('electron-reload')(__dirname);
+// In case I forget to comment out or remove when commiting
+try {
+  //require('electron-reload')(__dirname);
+}
+catch (e) {
+  console.log('Electron-Reload Error. Possibly not in Dev');
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.

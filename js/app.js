@@ -5,7 +5,11 @@ const settings = require('./settings.js');
 const toaster = require('./toaster.js');
 const scheduler = require('./scheduler.js');
 const $ = jQuery = require('jquery');
-const ipc = require('electron').ipcRenderer
+const ipc = require('electron').ipcRenderer;
+const fileOps = require('./fileOps.js');
+
+// Make sure images folder exisits
+fileOps.checkImagesDirectory();
 
 // When app loads do these initially
 t.loadShowList(); // Load list of shows from file

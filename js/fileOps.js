@@ -27,4 +27,14 @@ exports.saveFile = function saveFile(filename, data) {
   }
 }
 
+// Check to make sure images directory exists. If not, create it
+exports.checkImagesDirectory = function checkImagesDirectory() {
+  try {
+    fs.statSync(`${process.cwd()}/data/images`);
+  }
+  catch (e) {
+    fs.mkdirSync(`${process.cwd()}/data/images`);
+  }
+}
+
 module.exports = exports;

@@ -12,7 +12,7 @@ const shell = require('electron').shell
 // Create a new EventEmitter
 const torrentAlerter = new EventEmitter();
 
-// Specify File Name
+// Specify File Name for show list file
 const FILENAME = 'showList.json';
 
 // Map JS days 0-6 to String versions
@@ -42,10 +42,18 @@ function parseData(data, currentShow) {
     searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
       .replace('S', '').replace(' ', 'x').replace('0', '');
     searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
-    // Loop through the results for this show
+    /* 
+      Loop through the results for this show. Starting at the least recent result
+      so that if user is a few episodes behind, it should find them all 
+    */
     for(let i = Object.keys(data).length - 1 ; i > 0 ; i--) {
       console.log(data[i].title);
       // If a new episode was found, update the search terms
+      /* 
+        TODO: Push to array, then check array for length > 0 instead of true/false
+        So that I can set newEpisodeFound to false so search terms only updated once
+        Instead of several times during the loop
+      */
       if (newEpisodeFound) {
         searchTerms = [showList[currentShow].nextEpisode];
         searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
@@ -106,14 +114,14 @@ exports.checkForNewEpisode = function checkForNewEpisode(show, type, next) {
   }
 }
 
-// Show notification center notification
+// Show notification center notification or task bar notification on Windows
 function newEpisodeAlert(torrentInfo) {
   const settings = require('./settings.js');
   if (settings.getSetting('Notifications')) {
     notifier.notify({
       'title': `New Episode of ${torrentInfo.showName} available!`,
       'sound': true,
-      'message': 'Click to download top result',
+      'message': 'Click this notification to download',
       'open': `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`
     });
   }
@@ -121,14 +129,15 @@ function newEpisodeAlert(torrentInfo) {
     emitMessage(`New episode of ${torrentInfo.showName} available. Notifications are turned off.`);
     toaster.showToast('Notifications are turned off');
   }
+  // If automatic downloads are turned on, download torrent immediately
   if(settings.getSetting('Automatic Downloads')) {
-    emitMessage('Automatic downloads are turned on....');
+    emitMessage('Automatic downloads are turned on.');
     emitMessage(`New episode of ${torrentInfo.showName} available. Opening magnet link...`);
     if(shell.openExternal(`magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`)) {
       emitMessage('Magnet link was opened successfully. Check your torrent client.');
     }
     else {
-      emitMessage('Torrent client not found. Please check to make sure it is associated with magnet links.');
+      emitMessage('Something went wrong while opening external link.');
     }
   }
 }
@@ -187,16 +196,18 @@ exports.removeShow = function removeShow(showName) {
   saveShows();
 }
 
+// Changes a setting from on -> off or vice versa
 exports.toggleActive = function toggleActive(showName) {
   showList[showName].active = !showList[showName].active;
   saveShows();
+  return showList[showName].active;
 }
 
 // Load the showList from file (done on app load)
 exports.loadShowList = function loadShowList() {
   try {
     showList = JSON.parse(fs.readFileSync(`${process.cwd()}/data/${FILENAME}`));
-    emitMessage("Found show list file, loaded data.");
+    emitMessage("Found show list file. Loaded shows.");
   }
   catch (e) {
     emitMessage("No show list file found. Using a blank list.");
@@ -204,7 +215,7 @@ exports.loadShowList = function loadShowList() {
   }
 }
 
-// Returns name and time of show airing (active shows only)
+// Returns name and time (plus timezoen) of show airing (active shows only)
 exports.checkShowsOnDay = function checkShowsOnDay(dayOfWeek) {
   let showsThatDay = [];
   Object.keys(showList).forEach(function (showName) {

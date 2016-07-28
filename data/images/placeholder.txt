@@ -1,1 +1,0 @@
-Does not store images in this folder currently if it does not exist. TODO do check to see if folder exists and create if necessary.
