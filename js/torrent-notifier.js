@@ -37,6 +37,7 @@ var exports = {};
 function parseData(data, currentShow) {
   return (function(data) {
     let newEpisodeFound = false;
+    let results = [];
     // Set up what we are searching for
     let searchTerms = [showList[currentShow].nextEpisode];
     searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
@@ -48,28 +49,30 @@ function parseData(data, currentShow) {
     */
     for(let i = Object.keys(data).length - 1 ; i > 0 ; i--) {
       console.log(data[i].title);
+
       // If a new episode was found, update the search terms
-      /* 
-        TODO: Push to array, then check array for length > 0 instead of true/false
-        So that I can set newEpisodeFound to false so search terms only updated once
-        Instead of several times during the loop
-      */
       if (newEpisodeFound) {
         searchTerms = [showList[currentShow].nextEpisode];
         searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
           .replace('S', '').replace(' ', 'x').replace('0', '');
         searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
+        newEpisodeFound = false; // Reset new episode found so we update again if new found.
       }
+
       // Loop through search terms to see if is in the title of this result
       for(let term = 0; term < searchTerms.length ; term++) {
         if (data[i].title.indexOf(searchTerms[term]) > 0) {
           emitMessage(`New Episode of ${currentShow} found!`);
           emitMessage(`${searchTerms[term]} matched ${data[i].title}`);
+
+          // Add some info for notification
           data[i].showName = currentShow;
+          data[i].episodeFound = showList[currentShow].nextEpisode;
 
           // Trigger the desktop notification
           newEpisodeAlert(data[i]);
           newEpisodeFound = true;
+          results.push(data[i]);
 
           // Update nextEpisode to what should be the next episode
           showList[currentShow].nextEpisode = incrementEpisode(showList[currentShow].nextEpisode);
@@ -78,7 +81,7 @@ function parseData(data, currentShow) {
         }
       }
     }
-    return newEpisodeFound;
+    return results;
   })(data);
 }
 
@@ -119,7 +122,7 @@ function newEpisodeAlert(torrentInfo) {
   const settings = require('./settings.js');
   if (settings.getSetting('Notifications')) {
     notifier.notify({
-      'title': `New Episode of ${torrentInfo.showName} available!`,
+      'title': `${torrentInfo.episodeFound} of ${torrentInfo.showName} available!`,
       'sound': true,
       'message': 'Click this notification to download',
       'open': `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`

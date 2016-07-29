@@ -54,8 +54,8 @@ exports.scheduleShow = scheduleShow;
 function addJob(nameOfShow, hour, minute, dayofweek) {
   let time = `${minute} ${hour} * * ${DAY_OF_WEEK[dayofweek]}`;
   scheduledJobs[nameOfShow][dayofweek] = schedule.scheduleJob(time, function(){
-    t.checkForNewEpisode(nameOfShow, 'auto', function (foundNewEpisode) {
-      if (!foundNewEpisode) {
+    t.checkForNewEpisode(nameOfShow, 'auto', function (results) {
+      if (results.length === 0) {
         addIntervalCheck(nameOfShow);
       }
     });
@@ -106,9 +106,9 @@ function addIntervalCheck(nameOfShow) {
   intervalJobs[nameOfShow].nextCheck = schedule.scheduleJob(job_time, function() {
     intervalJobs[nameOfShow].retries--; // subtract for each try
     t.emitMessage(`Checking for ${nameOfShow}. Retries left: ${intervalJobs[nameOfShow].retries}...`);
-    t.checkForNewEpisode(nameOfShow, 'auto', function (foundNewEpisode) {
+    t.checkForNewEpisode(nameOfShow, 'auto', function (results) {
       // Schedule again if no new episode and retries left
-      if (!(foundNewEpisode || intervalJobs[nameOfShow].retries === 0)) {
+      if (!(results.length > 0 || intervalJobs[nameOfShow].retries === 0)) {
         intervalJobs[nameOfShow].nextCheck.cancel(); // cancel what is there now
         addIntervalCheck(nameOfShow); // add the new check
       }

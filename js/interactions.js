@@ -75,8 +75,8 @@ $(document).on('click', '.downloadButton', function() {
   let actionItem = $(this).parent().attr('data');
   if(window.confirm(`Check for new episodes of ${actionItem} now?`)) {
     t.emitMessage(`Manual check for ${actionItem} started!`);
-    t.checkForNewEpisode(actionItem, 'manual', function(newEpisodeFound) {
-      if (newEpisodeFound) {
+    t.checkForNewEpisode(actionItem, 'manual', function(results) {
+      if (results.length > 0) {
         toaster.showToast(`Manual check for ${actionItem} received results!`);
       }
       else {

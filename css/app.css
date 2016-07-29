@@ -13,6 +13,7 @@ body {
   padding: 0;
 }
 
+/* Hidden div with edit dialog */
 #backdrop {
   width: 100%;
   height: 100%;
@@ -22,32 +23,7 @@ body {
   display: none;
 }
 
-#connection {
-  z-index: 1000;
-  display: none;
-  position: absolute;
-  top: 40px;
-  right: 5px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  height: 201px;
-  width: 300px;
-  background-color: #f5f5f5;
-}
-
-#connection span {
-  position: absolute;
-  top: 15px;
-  left: 80px;
-}
-
-#connection i {
-  position: relative;
-  top: 50px;
-  left: 100px;
-  font-size: 800%;
-}
-
+/* Left Side Navigation */
 #side-nav {
   text-align: center;
   background-color: #000;
@@ -80,6 +56,26 @@ body {
   cursor: default;
 }
 
+#side-nav ul {
+  list-style: none;
+  padding: 19px;
+  margin: 0
+}
+
+#side-nav li {
+  padding-bottom: 8px;
+}
+
+#side-nav a {
+  font-size: 2rem;
+  color: #555
+}
+
+#side-nav a:hover {
+  color: #5f6;
+}
+
+/* Top Bar */
 #top-bar {
   background-color: #f5f5f5;
   border-bottom: 1px solid #e5e5e5;
@@ -140,6 +136,33 @@ body {
   color: darkred !important;
 }
 
+#connection {
+  z-index: 1000;
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 201px;
+  width: 300px;
+  background-color: #f5f5f5;
+}
+
+#connection span {
+  position: absolute;
+  top: 15px;
+  left: 80px;
+}
+
+#connection i {
+  position: relative;
+  top: 50px;
+  left: 100px;
+  font-size: 800%;
+}
+
+/* Main Views */
 #main {
   min-width: 272px;
   position: absolute;
@@ -163,25 +186,6 @@ body {
   overflow-y: auto;
 }
 
-#side-nav ul {
-  list-style: none;
-  padding: 19px;
-  margin: 0
-}
-
-#side-nav li {
-  padding-bottom: 8px;
-}
-
-#side-nav a {
-  font-size: 2rem;
-  color: #555
-}
-
-#side-nav a:hover {
-  color: cornflowerblue;
-}
-
 #wrapper {
   height: 100%;
   width: 100%;
@@ -199,6 +203,35 @@ body {
   text-align: center;
 }
 
+/* Add show button */
+#addShowButton {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  position: fixed;
+  border: 1px solid black;
+  bottom: 50px;
+  right: 50px;
+  background-color: lightgreen;
+  box-shadow: 10px 10px 5px #888888;
+  transition: all 500ms;
+  cursor: pointer;
+}
+
+#addShowButton i {
+  font-size: 50px;
+  position: relative;
+  top: 18px;
+  left: 20px;
+}
+
+#addShowButton:hover {
+  transform: scale(1.2, 1.2);
+  box-shadow: 10px 15px 15px #888888;
+  background-color: #5f6;
+}
+
+/* Individaul show listings */
 .showListing {
   width: 200px;
   height: 300px;
@@ -217,6 +250,7 @@ body {
   border-radius: 10px;
 }
 
+/* Hidden hover items */
 .showListing .info {
   display: none;
   background-color: rgba(0, 0, 0, 0.8);
@@ -409,33 +443,6 @@ body {
   vertical-align: middle;
 }
 
-#addShowButton {
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
-  position: fixed;
-  border: 1px solid black;
-  bottom: 50px;
-  right: 50px;
-  background-color: lightgreen;
-  box-shadow: 10px 10px 5px #888888;
-  transition: all 500ms;
-  cursor: pointer;
-}
-
-#addShowButton i {
-  font-size: 50px;
-  position: relative;
-  top: 18px;
-  left: 20px;
-}
-
-#addShowButton:hover {
-  transform: scale(1.2, 1.2);
-  box-shadow: 10px 15px 15px #888888;
-  background-color: #5f6;
-}
-
 #monthName {
   text-align: center;
   font-size: 200%;
@@ -578,6 +585,11 @@ body {
   visibility: hidden;
 }
 
+/* Remove outline on input elemets */
+input:focus {
+    outline: none;
+}
+
 @keyframes scaleIn {
   from {transform: scale(2)}
   to {transform: scale(1)}
@@ -683,9 +695,4 @@ label > .fa-power-off {
   right: 85px;
   height: 100%;
   left: 50px;
-}
-
-/* Remove outline on input elemets */
-input:focus {
-    outline: none;
 }
