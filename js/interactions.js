@@ -159,7 +159,7 @@ $(document).on('click', '#save-btn', function () {
   // New/Edit show validation
   if (newShow.nameOfShow.trim().length < 4) {
     $error.css('visibility', 'visible');
-    $error.text('Show name is invalid');
+    $error.text('Show Name is invalid');
     $error.css('animation', 'scaleIn 600ms');
     return;
   }
@@ -169,14 +169,17 @@ $(document).on('click', '#save-btn', function () {
     $error.css('animation', 'scaleIn 600ms');
     return;
   }
+  let error = null; // look for problen with airDay
   newShow.airDay.forEach( function(day) {
     if (!VALID_DAYS.toLowerCase().split(' ').includes(day)) {
       $error.css('visibility', 'visible');
-      $error.text(`${day} is not valid`);
+      $error.text(`Air Day is not valid`);
       $error.css('animation', 'scaleIn 600ms');
+      error = true;
       return;
     }
   });
+  if (error) return; // stop execution if there was an error
   if (!VALID_TIMEZONES.includes(newShow.timezone)) {
     $error.css('visibility', 'visible');
     $error.text('Timezone is not valid');

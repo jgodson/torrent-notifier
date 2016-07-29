@@ -9,7 +9,7 @@ const toaster = require('./toaster.js');
 
 const FILENAME = 'settings.json';
 
-// Set the default settings TODO: seperate file?
+// Set the default settings
 const defaultSettings = {
   "Tray Icon" : true,
   "Notifications" : true,
