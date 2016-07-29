@@ -35,16 +35,44 @@ function scheduleShow(nameOfShow) {
   let show = t.getShow(nameOfShow);
   if (show.active) { // Only schedule if it's active
     let timeParts = show.airTime.split(':');
+    // Make each an integer
+    timeParts[0] = parseInt(timeParts[0]);
+    timeParts[1] = parseInt(timeParts[1]);
+    let dayDiff = 0; // If we roll over previous/next day
+    // Calculate time zone offset
     let timeNow = Date.now();
     let offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(timeNow) 
-      - moment.tz.zone(show.timezone).offset(timeNow)) / 60; // Calculate time zone offset
-    timeParts[0] = parseInt(timeParts[0]) - offset + 1; // Show won't be ready until at least an hour after airing
-    timeParts[1] = parseInt(timeParts[1]) + 10; // 1 hour 10 mins after airing show may be ready
+      - moment.tz.zone(show.timezone).offset(timeNow)) / 60;
+    timeParts[0] -= offset;
+    // Schedule check an hour and 10 minutes after air time
+    timeParts[0] += 1;
+    timeParts[1] += 10;
+    // Check to see if minutes rolled over
+    if (timeParts[1] > 60) {
+      timeParts[0] += 1;
+      timeParts[1] -= 60;
+    }
+    // Check to see if hour rolled over
+    if (timeParts[0] < 0) {
+      dayDiff -= 1;
+      timeParts[0] += 24
+    }
+    if (timeParts[0] >= 24) {
+      dayDiff += 1;
+      timeParts[0] -= 24;
+    }
+
     scheduledJobs[nameOfShow] = {};
     show.airDay.forEach( (day) => { // Add each airing day of show to schedule
+      // adjust for offset
+      day = DAY_OF_WEEK[day] + dayDiff;
+      // if day > 6?, day - 6 // else: if day < 0?, day + 6 // else: no change
+      day > 6 ? day -= 6 : day < 0 ? day += 6 : day;
       addJob(nameOfShow, timeParts[0], timeParts[1], day);
-      t.emitMessage(`Scheduled check for ${nameOfShow} for ${day} @ ` +
-      `${utils.convert12HrTime(`${timeParts[0]}:${timeParts[1]}`, null, false)}`);
+      t.emitMessage(
+        `Scheduled check for ${nameOfShow} for ${utils.getKeyByValue(DAY_OF_WEEK, day)} @ ` +
+        `${utils.convert12HrTime(`${timeParts[0]}:${timeParts[1]}`, null, false)}`
+      );
     });
   }
 }
@@ -52,8 +80,8 @@ exports.scheduleShow = scheduleShow;
 
 // Add job to scheduler
 function addJob(nameOfShow, hour, minute, dayofweek) {
-  let time = `${minute} ${hour} * * ${DAY_OF_WEEK[dayofweek]}`;
-  scheduledJobs[nameOfShow][dayofweek] = schedule.scheduleJob(time, function(){
+  let time = `${minute} ${hour} * * ${dayofweek}`;
+  scheduledJobs[nameOfShow][utils.getKeyByValue(DAY_OF_WEEK, dayofweek)] = schedule.scheduleJob(time, function(){
     t.checkForNewEpisode(nameOfShow, 'auto', function (results) {
       if (results.length === 0) {
         addIntervalCheck(nameOfShow);

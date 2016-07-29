@@ -142,6 +142,11 @@ function convert12HrTime(givenTime, showName, useOffset = true) {
   let hour = time[0] > 12 ? time[0] - 12 : time[0];
   let minute = time[1];
   hour -= offset || 0;
-  return `${hour}:${minute} ${time[0] > 12 ? 'PM' : 'AM'}`
+  return `${hour}:${minute < 10 ? `0${minute}` : minute} ${time[0] > 12 ? 'PM' : 'AM'}`
 }
 module.exports.convert12HrTime = convert12HrTime;
+
+function getKeyByValue(object, value) {
+  return Object.keys(object).find((key) => object[key] === value);
+}
+module.exports.getKeyByValue = getKeyByValue;
