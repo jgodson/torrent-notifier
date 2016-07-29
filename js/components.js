@@ -95,7 +95,7 @@ exports.buildCalendar = function buildCalendar() {
       let showsToday = t.checkShowsOnDay(dayofweek);
       for (let curr = 0; curr < showsToday.length; curr++) {
         htmlCalendar += `<div class='showOnDay dayInfo'>${showsToday[curr][0]}</div>
-  <div class='showTimeOnDay dayInfo'>${utils.convert12HrTime(showsToday[curr][1], showsToday[curr][0])}</div>`;
+  <div class='showTimeOnDay dayInfo'>${utils.convertToCalenderTime(showsToday[curr][1], showsToday[curr][0])}</div>`;
       }
       htmlCalendar += "</div>";
       // End loop if we reach the required days in the month

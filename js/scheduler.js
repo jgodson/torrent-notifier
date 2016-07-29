@@ -12,15 +12,7 @@ const CHECK_INTERVAL = 15; // minutes
 // How many times to check torrent API before giving up
 const NUMBER_OF_RETRIES = 4;
 
-const DAY_OF_WEEK = {
-  "Sunday"    :   0,
-  "Monday"    :   1,
-  "Tuesday"   :   2,
-  "Wednesday" :   3,
-  "Thursday"  :   4,
-  "Friday"    :   5,
-  "Saturday"  :   6
-}
+const DAY_OF_WEEK = utils.DAY_OF_WEEK; // import day of week object
 
 var exports = {};
 
@@ -34,46 +26,17 @@ let intervalJobs = {};
 function scheduleShow(nameOfShow) {
   let show = t.getShow(nameOfShow);
   if (show.active) { // Only schedule if it's active
-    let timeParts = show.airTime.split(':');
-    // Make each an integer
-    timeParts[0] = parseInt(timeParts[0]);
-    timeParts[1] = parseInt(timeParts[1]);
-    let dayDiff = 0; // If we roll over previous/next day
-    // Calculate time zone offset
-    let timeNow = Date.now();
-    let offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(timeNow) 
-      - moment.tz.zone(show.timezone).offset(timeNow)) / 60;
-    timeParts[0] -= offset;
-    // Schedule check an hour and 10 minutes after air time
-    timeParts[0] += 1;
-    timeParts[1] += 10;
-    // Check to see if minutes rolled over
-    if (timeParts[1] > 60) {
-      timeParts[0] += 1;
-      timeParts[1] -= 60;
-    }
-    // Check to see if hour rolled over
-    if (timeParts[0] < 0) {
-      dayDiff -= 1;
-      timeParts[0] += 24
-    }
-    if (timeParts[0] >= 24) {
-      dayDiff += 1;
-      timeParts[0] -= 24;
-    }
-
-    scheduledJobs[nameOfShow] = {};
-    show.airDay.forEach( (day) => { // Add each airing day of show to schedule
-      // adjust for offset
-      day = DAY_OF_WEEK[day] + dayDiff;
-      // if day > 6?, day - 6 // else: if day < 0?, day + 6 // else: no change
-      day > 6 ? day -= 6 : day < 0 ? day += 6 : day;
-      addJob(nameOfShow, timeParts[0], timeParts[1], day);
-      t.emitMessage(
-        `Scheduled check for ${nameOfShow} for ${utils.getKeyByValue(DAY_OF_WEEK, day)} @ ` +
-        `${utils.convert12HrTime(`${timeParts[0]}:${timeParts[1]}`, null, false)}`
-      );
-    });
+  // timeParts will be array returned from function [hour, minute, dayChange]
+  let timeParts = utils.getSchedulerTime(show.airTime, show.timezone);
+  scheduledJobs[nameOfShow] = {};
+  show.airDay.forEach( (day) => { // Add each airing day of show to schedule
+    day = utils.changeDay(day, timeParts[2]);
+    addJob(nameOfShow, timeParts[0], timeParts[1], day);
+    t.emitMessage(
+      `Scheduled check for ${nameOfShow} for ${utils.getKeyByValue(DAY_OF_WEEK, day)} @ ` +
+      `${utils.convert12HrTime(`${timeParts[0]}:${timeParts[1]}`)}`
+    );
+  });
   }
 }
 exports.scheduleShow = scheduleShow;
@@ -81,11 +44,12 @@ exports.scheduleShow = scheduleShow;
 // Add job to scheduler
 function addJob(nameOfShow, hour, minute, dayofweek) {
   let time = `${minute} ${hour} * * ${dayofweek}`;
-  scheduledJobs[nameOfShow][utils.getKeyByValue(DAY_OF_WEEK, dayofweek)] = schedule.scheduleJob(time, function(){
-    t.checkForNewEpisode(nameOfShow, 'auto', function (results) {
-      if (results.length === 0) {
-        addIntervalCheck(nameOfShow);
-      }
+  scheduledJobs[nameOfShow][utils.getKeyByValue(DAY_OF_WEEK, dayofweek)] = 
+    schedule.scheduleJob(time, function(){
+      t.checkForNewEpisode(nameOfShow, 'auto', function (results) {
+        if (results.length === 0) {
+          addIntervalCheck(nameOfShow);
+        }
     });
   });
 }
@@ -93,7 +57,12 @@ function addJob(nameOfShow, hour, minute, dayofweek) {
 // Remove show from scheduler
 function cancelShow(nameOfShow) {
   t.emitMessage(`Cancelling all jobs for ${nameOfShow}.`);
-  t.getShow(nameOfShow).airDay.forEach( (day) => {
+  let showToCancel = t.getShow(nameOfShow);
+  // timeParts will be array returned from function [hour, minute, dayChange]
+  let timeParts = utils.getSchedulerTime(showToCancel.airTime, showToCancel.timezone);
+  showToCancel.airDay.forEach((day) => {
+    // Change day if the time difference adjusted the scheduled day
+    day = utils.getKeyByValue(DAY_OF_WEEK, utils.changeDay(day, timeParts[2])); // Make it string value
     // Make sure that show is scheduled before trying to cancel
     if (typeof scheduledJobs[nameOfShow] !== 'undefined') {
       scheduledJobs[nameOfShow][day].cancel();

@@ -47,16 +47,17 @@ function parseData(data, currentShow) {
       Loop through the results for this show. Starting at the least recent result
       so that if user is a few episodes behind, it should find them all 
     */
-    for(let i = Object.keys(data).length - 1 ; i > 0 ; i--) {
+    for(let i = 1 ; i < Object.keys(data).length ; i++) {
       console.log(data[i].title);
 
-      // If a new episode was found, update the search terms
+      // If a new episode was found, update the search terms and search the list again
       if (newEpisodeFound) {
         searchTerms = [showList[currentShow].nextEpisode];
         searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
           .replace('S', '').replace(' ', 'x').replace('0', '');
         searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
         newEpisodeFound = false; // Reset new episode found so we update again if new found.
+        i = 1; // Start from the first result again
       }
 
       // Loop through search terms to see if is in the title of this result
@@ -119,6 +120,8 @@ exports.checkForNewEpisode = function checkForNewEpisode(show, type, next) {
 
 // Show notification center notification or task bar notification on Windows
 function newEpisodeAlert(torrentInfo) {
+  // TODO: Keep the result in a list in app so windows user can download. 
+  // Also only show click to download notification on osx because Windows doesn't work
   const settings = require('./settings.js');
   if (settings.getSetting('Notifications')) {
     notifier.notify({
