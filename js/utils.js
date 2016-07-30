@@ -161,7 +161,6 @@ function convertToCalenderTime(givenTime, showName) {
   let time = convertTime(givenTime, show.timezone);
   let hour = time[0] > 12 ? time[0] - 12 : time[0] = 0 ? time[0] + 12 : time[0];
   let minute = time[1];
-  console.log(time);
   if (time[2] !== 0) return 'Day Diff';
   return `${hour}:${minute < 10 ? `0${minute}` : minute} ${time[0] > 12 ? 'PM' : 'AM'}`
 }

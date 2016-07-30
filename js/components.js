@@ -53,6 +53,10 @@ exports.buildShowList = function buildShowList (next) {
   }
 }
 
+/*
+  TODO Build calendar and then build showonday components to get proper days
+  if timezone changes day
+*/
 exports.buildCalendar = function buildCalendar() {
   let today = new Date();
   let monthNames = {
@@ -69,6 +73,7 @@ exports.buildCalendar = function buildCalendar() {
     10 : "November",
     11 : "December"
   }
+  let stop = false; // when to stop building days
   // Initialize variable to store html and Add month name to top of Calendar
   let htmlCalendar = `<div id='monthName'>${monthNames[today.getMonth()]}</div>`;
   // Add Weekday labels to top of Calendar
@@ -81,7 +86,7 @@ exports.buildCalendar = function buildCalendar() {
   let daysInMonth = moment().daysInMonth();
   let firstWeek = true;
   let monthStartsOn = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
-  for(let day = 1; day < daysInMonth;) {
+  for(let day = 1; day <= daysInMonth;) {
     htmlCalendar += "<div class='week'>";
     // Pad with blank days to make it look a bit better
     if (firstWeek) {
@@ -100,10 +105,12 @@ exports.buildCalendar = function buildCalendar() {
       htmlCalendar += "</div>";
       // End loop if we reach the required days in the month
       if (day === daysInMonth) {
-        break;
+        stop = true;
       }
+      if (stop) break;
       day++;
     }
+    if (stop) break;
     htmlCalendar += "</div>";
   }
   return htmlCalendar;
