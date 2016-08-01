@@ -9,11 +9,9 @@ module.exports.Searcher = function Searcher(options) {
       // Down Key Press
         if (this.searcher_box.find('p').length - 1 > this.currentResult) {
           this.currentResult++;
-          //console.log(`${this.currentResult}/${this.searcher_box.find('p').length}`);
         }
         else {
           this.currentResult = 0;
-          //console.log(this.currentResult);
         }
         $(this.searcher_box.find('p')[this.currentResult]).focus();
     },
@@ -21,12 +19,10 @@ module.exports.Searcher = function Searcher(options) {
       // Up Key Press
         if (this.currentResult > 0) {
           this.currentResult--;
-          //console.log(`${this.currentResult}/${this.searcher_box.find('p').length}`);
         }
         else {
           // Subtract 1 for 0 index -> length not 0 index
           this.currentResult = this.searcher_box.find('p').length - 1;
-          //console.log(this.currentResult);
         }
         $(this.searcher_box.find('p')[this.currentResult]).focus();
     },
