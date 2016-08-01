@@ -156,15 +156,15 @@ function convert12HrTime(givenTime) {
 module.exports.convert12HrTime = convert12HrTime;
 
 // Convert 24hr time to 12 hour time using timezone
-function convertToCalenderTime(givenTime, showName) {
+function convertCalenderTime(givenTime, showName) {
   let show = t.getShow(showName);
   let time = convertTime(givenTime, show.timezone);
   let hour = time[0] > 12 ? time[0] - 12 : time[0] = 0 ? time[0] + 12 : time[0];
   let minute = time[1];
-  if (time[2] !== 0) return 'Day Diff';
+  if (time[2] !== 0) return 'Day Diff'; // If change in days, we can't switch days right now so do this.
   return `${hour}:${minute < 10 ? `0${minute}` : minute} ${time[0] > 12 ? 'PM' : 'AM'}`
 }
-module.exports.convertToCalenderTime = convertToCalenderTime;
+module.exports.convertCalenderTime = convertCalenderTime;
 
 // Used for adjusting 24 hour time to timezone or adding extra time for scheduling
 function convertTime(showTime, showTimezone = null, scheduler = false) {
@@ -200,14 +200,16 @@ function convertTime(showTime, showTimezone = null, scheduler = false) {
     timeParts[0] -= 24;
   }
   timeParts.push(dayDiff);
-  return timeParts;
+  return timeParts; // return an array of the values
 }
 
+// Use convert time function with schedule option set to true that adds extra time
 function getSchedulerTime (showTime, showTimezone) {
   return convertTime(showTime, showTimezone, true);
 }
 module.exports.getSchedulerTime = getSchedulerTime;
 
+// Change day of week by days given as second argument
 function changeDay(day, dayDiff) {
   // adjust for offset
   day = DAY_OF_WEEK[day] + dayDiff;
@@ -216,6 +218,7 @@ function changeDay(day, dayDiff) {
 }
 module.exports.changeDay = changeDay;
 
+// Reverse lookup an object. Given value, get key.
 function getKeyByValue(object, value) {
   if (typeof object !== 'object') throw new TypeError('First paramater "object" must be an object');
   if (typeof value === 'undefined') throw new Error('Second paramater "value" must be given');

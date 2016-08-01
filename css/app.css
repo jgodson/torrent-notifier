@@ -213,7 +213,7 @@ body {
   bottom: 50px;
   right: 50px;
   background-color: lightgreen;
-  box-shadow: 10px 10px 5px #888888;
+  box-shadow: 10px 10px 5px rgba(0,0,0,0.5);
   transition: all 500ms;
   cursor: pointer;
 }
@@ -227,7 +227,7 @@ body {
 
 #addShowButton:hover {
   transform: scale(1.2, 1.2);
-  box-shadow: 10px 15px 15px #888888;
+  box-shadow: 20px 20px 15px rgba(0,0,0,0.5);
   background-color: #5f6;
 }
 
@@ -240,7 +240,7 @@ body {
   margin-bottom: 20px;
   margin-top: 20px;
   border-radius: 10px;
-  box-shadow: 8px 8px 8px grey;
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
 }
 
 .showListing img {
@@ -250,9 +250,13 @@ body {
   border-radius: 10px;
 }
 
+.showListing:hover > .info {
+  opacity: 1;
+}
+
 /* Hidden hover items */
 .showListing .info {
-  display: none;
+  opacity: 0;
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 10px;
   color: white;
@@ -260,6 +264,7 @@ body {
   height: 300px;
   position: relative;
   top: -302px;
+  transition: opacity 500ms;
 }
 
 .showTitle {
@@ -346,6 +351,9 @@ body {
   margin: auto;
   margin-top: 31px;
   width: 700px;
+  padding-bottom: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
 .week {

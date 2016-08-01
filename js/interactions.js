@@ -48,15 +48,6 @@ $('#connection-info').hover( function() {
   $('#connection').slideToggle();
 });
 
-// Show Listing Fade Animations
-$(document).on('mouseenter', '.showListing', function() {
-  $(this).find('.info').fadeIn();
-});
-
-$(document).on('mouseleave', '.showListing', function() {
-  $(this).find('.info').fadeOut();
-});
-
 // ---- Event Listeners ----
 // Calendar day click displays time show is on
 $(document).on('click', '.day', function() {
