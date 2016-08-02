@@ -8,18 +8,17 @@ var exports = {};
 // Loads data from file and returns it
 exports.loadFile = function loadFile(filename) {
   try {
-    let fileData = JSON.parse(fs.readFileSync(`${process.cwd()}/data/${filename}`));
-    return fileData;
+    return JSON.parse(fs.readFileSync(`${process.cwd()}/data/${filename}`));
   }
   catch (e) {
-    return undefined;
+    return false;
   }
 }
 
 // Saves data to file and returns true or false depending on whether it was successful
 exports.saveFile = function saveFile(filename, data) {
   try {
-    fs.writeFileSync(`data/${filename}`, JSON.stringify(data));
+    fs.writeFileSync(`${process.cwd()}/data/${filename}`, JSON.stringify(data));
     return true;
   }
   catch (e) {
@@ -27,14 +26,26 @@ exports.saveFile = function saveFile(filename, data) {
   }
 }
 
-// Check to make sure images directory exists. If not, create it
-exports.checkImagesDirectory = function checkImagesDirectory() {
+// Check to make sure given directory exists.
+exports.checkDirectory = function checkDirectory(dirname) {
   try {
-    fs.statSync(`${process.cwd()}/data/images`);
+    fs.statSync(`${process.cwd()}/data/${dirname}`);
   }
   catch (e) {
-    fs.mkdirSync(`${process.cwd()}/data/images`);
+    return false;
   }
+  return true;
+}
+
+// Create directory with given name
+exports.createDirectory = function createDirectory(dirname) {
+  try {
+    fs.mkdirSync(`${process.cwd()}/data/${dirname}`);
+  }
+  catch (e) {
+    return false;
+  }
+  return true;
 }
 
 module.exports = exports;

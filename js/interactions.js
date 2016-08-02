@@ -201,6 +201,10 @@ $(document).on('click', '#save-btn', function () {
     if (currentImageURL) {
       utils.getImage(newShow.nameOfShow, currentImageURL, function() {
         uiComp.buildShow(newShow.nameOfShow, newShow, function (newShowHTML) {
+          // Check to see if the 'no shows' paragraph is present.
+          if ($('#show-list').find('p').length > 0) {
+            $('#show-list').html(''); // Clear hmtl if it is so we don't display it any more
+          }
           $('#show-list').append(newShowHTML);
           $backdrop.fadeOut();
         });
