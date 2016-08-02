@@ -8,8 +8,10 @@ const $ = jQuery = require('jquery');
 const ipc = require('electron').ipcRenderer;
 const fileOps = require('./fileOps.js');
 
-// Make sure images folder exisits
-fileOps.checkImagesDirectory();
+// Make sure images folder exists. If not, create it
+if(!fileOps.checkDirectory('images')) {
+  fileOps.createDirectory('images');
+};
 
 // When app loads do these initially
 t.loadShowList(); // Load list of shows from file
