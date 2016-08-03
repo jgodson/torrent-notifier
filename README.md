@@ -1,9 +1,11 @@
 #This App is still under construction.
 
 ###FIXES BEFORE 1.0
-Windows users need a way to start torrent downloads when automatic downloads are turned off. Mac users can click notifications, however Windows 7 or 10 do not offer similar functionality.
-Need to customize menu options a bit and rename app from electron
-Figure out how to package as standalone app
+<ul>
+<li>Windows users need a way to start torrent downloads when automatic downloads are turned off. Mac users can click notifications, however Windows 7 or 10 do not offer similar functionality.</li>
+<li>Need to customize menu options a bit and rename app from electron</li>
+<li>Figure out how to package as standalone app</li>
+</ul>
 
 ###NOTE: Recently the torrent API I used for this app seems to have gone down, so functionality is limited to keeping track of shows on a calendar. It still serves its main purpose of a portfolio project for me.
 
