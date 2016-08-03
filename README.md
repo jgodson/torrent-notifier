@@ -5,7 +5,7 @@ Windows users need a way to start torrent downloads when automatic downloads are
 Need to customize menu options a bit and rename app from electron
 Figure out how to package as standalone app
 
-<h3 style="color: red;">NOTE: Recently the torrent API I used for this app seems to have gone down, so functionality is limited to keeping track of shows on a calendar. It still serves its main purpose of a portfolio project for me.</h3>
+###NOTE: Recently the torrent API I used for this app seems to have gone down, so functionality is limited to keeping track of shows on a calendar. It still serves its main purpose of a portfolio project for me.
 
 ###Also only tested on OSX 10.11.5 so far. Will test on Windows 10 and 7 once I finish to V1.0 release.
 
