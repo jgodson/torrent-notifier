@@ -1,7 +1,10 @@
 'use strict';
 
-const $ = jQuery = require('jquery');
-const $toaster = $('#toaster');
+// Do not require if testing
+if (!global.it) {
+  const $ = jQuery = require('jquery');
+  const $toaster = $('#toaster');
+}
 let timer;
 let shown = false;
 let backlog = [];

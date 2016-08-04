@@ -1,2 +1,3 @@
 // Require test files to run them
-require('./fileOpsTests.js');
+require('./fileOps.test.js');
+require('./utils.test.js');

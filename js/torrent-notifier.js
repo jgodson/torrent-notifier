@@ -1,13 +1,16 @@
 'use strict'
 
+if (!global.it) { // do not require if testing
+  const $ = jQuery = require("jquery");
+  const shell = require('electron').shell
+}
+
 const fs = require('fs');
 const request = require('request');
 const EventEmitter = require('events');
 const notifier = require('node-notifier');
 const fileOps = require('./fileOps.js');
-const $ = jQuery = require("jquery");
 const toaster = require('./toaster.js');
-const shell = require('electron').shell
 
 // Create a new EventEmitter
 const torrentAlerter = new EventEmitter();

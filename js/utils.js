@@ -1,5 +1,10 @@
-const $ = jQuery = require("jquery");
-const $status = $('#status');
+'use strict';
+
+ // Do not require if testing
+if(!global.it) {
+  const $ = jQuery = require("jquery");
+  const $status = $('#status');
+}
 const request = require('request');
 const fs = require('fs');
 const http = require('http');
@@ -149,9 +154,9 @@ function download(url, filePath, next) {
 // Convert 24hr time into 12hr time, no timezones applied
 function convert12HrTime(givenTime) {
   let time = convertTime(givenTime);
-  let hour = time[0] > 12 ? time[0] - 12 : time[0] = 0 ? time[0] + 12 : time[0];
+  let hour = time[0] > 12 ? time[0] - 12 : time[0] === 0 ? time[0] + 12 : time[0];
   let minute = time[1];
-  return `${hour}:${minute < 10 ? `0${minute}` : minute} ${time[0] > 12 ? 'PM' : 'AM'}`;
+  return `${hour}:${minute < 10 ? `0${minute}` : minute} ${time[0] >= 12 ? 'PM' : 'AM'}`;
 }
 module.exports.convert12HrTime = convert12HrTime;
 
@@ -159,15 +164,15 @@ module.exports.convert12HrTime = convert12HrTime;
 function convertCalenderTime(givenTime, showName) {
   let show = t.getShow(showName);
   let time = convertTime(givenTime, show.timezone);
-  let hour = time[0] > 12 ? time[0] - 12 : time[0] = 0 ? time[0] + 12 : time[0];
+  let hour = time[0] > 12 ? time[0] - 12 : time[0] === 0 ? time[0] + 12 : time[0];
   let minute = time[1];
   if (time[2] !== 0) return 'Day Diff'; // If change in days, we can't switch days right now so do this.
-  return `${hour}:${minute < 10 ? `0${minute}` : minute} ${time[0] > 12 ? 'PM' : 'AM'}`
+  return `${hour}:${minute < 10 ? `0${minute}` : minute} ${time[0] >= 12 ? 'PM' : 'AM'}`
 }
 module.exports.convertCalenderTime = convertCalenderTime;
 
 // Used for adjusting 24 hour time to timezone or adding extra time for scheduling
-function convertTime(showTime, showTimezone = null, scheduler = false) {
+function convertTime(showTime, showTimezone, scheduler) {
   let timeParts = showTime.split(':');
   // Make each an integer
   timeParts[0] = parseInt(timeParts[0]);

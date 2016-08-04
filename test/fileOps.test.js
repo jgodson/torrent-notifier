@@ -2,7 +2,7 @@ const fileOps = require('../js/fileOps');
 const assert = require('assert');
 const fs = require('fs');
 
-describe('fileOps', function() {
+describe('fileOps module tests', function() {
   const testObj = {
     testing : true,
     issues : false
