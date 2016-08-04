@@ -286,7 +286,7 @@ body {
   transform: scale(1.2, 1.2);
 }
 
-.infoButton > i {
+.infoButton.edit > i, .infoButton.delete > i {
   position: relative;
   color: black;
   font-size: 30px;
@@ -296,8 +296,9 @@ body {
 
 .activeButton {
   position: absolute;
-  bottom: 165px;
-  left: 26px;
+  bottom: 160px;
+  left: 43px;
+  border: none;
 }
 
 .activeButton:hover {

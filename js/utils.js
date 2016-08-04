@@ -1,9 +1,10 @@
 'use strict';
 
- // Do not require if testing
+ // Do not require jQuery if testing
+ var $status;
 if(!global.it) {
   const $ = jQuery = require("jquery");
-  const $status = $('#status');
+  $status = $('#status');
 }
 const request = require('request');
 const fs = require('fs');

@@ -1,8 +1,11 @@
 'use strict'
 
-if (!global.it) { // do not require if testing
-  const $ = jQuery = require("jquery");
-  const shell = require('electron').shell
+// Do not require jQuery or electron stuff if testing
+var $;
+var shell;
+if (!global.it) {
+  $ = jQuery = require("jquery");
+  shell = require('electron').shell
 }
 
 const fs = require('fs');

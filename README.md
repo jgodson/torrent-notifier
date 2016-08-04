@@ -7,9 +7,7 @@
 <li>Figure out how to package as standalone app</li>
 </ul>
 
-###NOTE: Recently the torrent API I used for this app seems to have gone down, so functionality is limited to keeping track of shows on a calendar. It still serves its main purpose of a portfolio project for me.
-
-###Also only tested on OSX 10.11.5 so far. Will test on Windows 10 and 7 once I finish to V1.0 release.
+###If you are on Windows you currently need to have Automatic Downloads setting turned on or there is no way to start the torrents.
 
 ![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.13-PM-1024x650.png)
 >Add all your favourite shows! Poster art is automatically downloaded

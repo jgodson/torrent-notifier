@@ -1,9 +1,9 @@
 'use strict';
-
-// Do not require if testing
+// Do not require jQuery if testing
+var $toaster;
 if (!global.it) {
   const $ = jQuery = require('jquery');
-  const $toaster = $('#toaster');
+  $toaster = $('#toaster');
 }
 let timer;
 let shown = false;
