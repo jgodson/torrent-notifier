@@ -4,6 +4,7 @@ const utils = require('./utils.js');
 const t = require('./torrent-notifier.js');
 const moment = require('moment');
 const settings = require('./settings.js');
+const notifications = require('./notifications.js');
 
 // Image src to use when no image found
 const DEFAULT_IMAGE = `${process.cwd()}/data/images/noimage.jpg`;
@@ -31,7 +32,7 @@ function buildShow(showName, currentShow, next) {
 }
 exports.buildShow = buildShow;
 
-// Build show list collection page and return it 
+// Build show list collection page and return it
 exports.buildShowList = function buildShowList (next) {
   let htmlList = "";
   let showList = t.getShowList();
@@ -197,6 +198,15 @@ function buildSetting(name) {
       </div>
     </div>
   </div>`;
+}
+
+// Populates the view with current notificaitons.
+exports.buildNotifications = function buildNotifications() {
+  let html = '';
+  notifications.getAllNotifications().forEach(function(notification) {
+    html += notification.html;
+  });
+  return html || '<p>No notifications to show!</p>';
 }
 
 module.exports = exports;

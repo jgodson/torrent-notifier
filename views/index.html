@@ -24,7 +24,7 @@
         <li><a href="#" title="Show List" id="showList" class="nav"><i class="fa fa-th"></i></a></li>
         <li>
           <a href="#" title="Notifications" id="notifications" class="nav"><i class="fa fa-bell-o"></i>
-          <div id='notification-badge'>12</div>
+          <div id='notification-badge'>0</div>
           </a>
         </li>
         <li><a href="#" title="Message Logs" id="home" class="nav"><i class="fa fa-list-alt"></i></a></li>
@@ -34,7 +34,7 @@
       <div id="battery"></div>
     </div>
     <div id="top-bar">
-      <div id="title">Show List</div>
+      <div id="title"><span>Show List</span></div>
       <div id='connection-info'>
         <div><i class="fa fa-wifi"></i></div>
         <div><i id="status" class="fa fa-circle-o-notch spinning"></i></div>
@@ -53,6 +53,7 @@
 <script>
   const $ = jQuery = require("jquery");
   const uiComp = require('../js/components.js');
+  const notifications = require('../js/notifications.js');
 
   require('../js/app.js');
   require('../js/interactions.js');
@@ -61,7 +62,7 @@
   // Any navigation related code is here
   $('#side-nav a').on('click', function (e) {
     navigate($(this).attr('id'));
-    $('#title').text($(this).attr('title'));
+    $('#title span').text($(this).attr('title'));
   });
 
   function navigate(page) {

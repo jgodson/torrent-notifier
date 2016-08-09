@@ -1,0 +1,57 @@
+<div id='notifications-wrapper'>
+  <div id='notification-buttons'>
+    <button id='download-all' onclick='downloadAll()'>Download All</button>
+    <button id='dismiss-all' onclick='dismissAll()'>Dismiss All</button>
+  </div>
+</div>
+<script>
+$(document).ready( () => {
+  $('#notifications-wrapper').append(uiComp.buildNotifications());
+});
+
+function notificationDownload(element) {
+  // Get ID from the parent notification element
+  let downloadID = element.path[2].attributes[1].nodeValue;
+  // Get magnet link and start download
+  notifications.startDownload(downloadID);
+  // Remove notification
+  notifications.removeNotification(downloadID);
+  removeNotificationFromUI(element.path[2]);
+}
+
+function notificationDismiss(element) {
+  // Get ID from the parent notification element
+  let removeID = element.path[2].attributes[1].nodeValue;
+  // Remove notification
+  notifications.removeNotification(removeID);
+  removeNotificationFromUI(element.path[2]);
+}
+
+function removeNotificationFromUI(element) {
+  // Remove this element
+  $(element).animate({zoom: 0, opacity: 0});
+  setTimeout(function() {
+    $(element).remove();
+    if (notifications.getNumberOfNotifications() === 0) {
+      $('#notifications-wrapper').html('<p>No notifications to show!</p>');
+    }
+  }, 300);
+}
+
+function downloadAll() {
+  let length = notifications.getAllNotifications().length
+  for (let index = 0; index < length; length++) {
+    notifications.startDownload(notification.id);
+    notifications.removeNotification(notification.id);
+    removeNotificationFromUI($(`[data-id="${notification.id}"]`));
+  }
+}
+
+function dismissAll() {
+  notifications.getAllNotifications().forEach(function(notification) {
+    console.log(notification);
+    notifications.removeNotification(notification.id);
+    removeNotificationFromUI($(`[data-id="${notification.id}"]`));
+  });
+}
+</script>

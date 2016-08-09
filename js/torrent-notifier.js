@@ -49,9 +49,9 @@ function parseData(data, currentShow) {
     searchTerms[1] = showList[currentShow].nextEpisode.split('E').join(' ')
       .replace('S', '').replace(' ', 'x').replace('0', '');
     searchTerms[2] = showList[currentShow].nextEpisode.toLowerCase();
-    /* 
+    /*
       Loop through the results for this show. Starting at the least recent result
-      so that if user is a few episodes behind, it should find them all 
+      so that if user is a few episodes behind, it should find them all
     */
     for(let i = 1 ; i < Object.keys(data).length ; i++) {
       console.log(data[i].title);
@@ -126,20 +126,32 @@ exports.checkForNewEpisode = function checkForNewEpisode(show, type, next) {
 
 // Show notification center notification or task bar notification on Windows
 function newEpisodeAlert(torrentInfo) {
-  // TODO: Keep the result in a list in app so windows user can download. 
-  // Also only show click to download notification on osx because Windows doesn't work
+  // Add to in app notification view
+  let appNotificationID = notifications.addNotification(
+    `${torrentInfo.episodeFound} of ${torrentInfo.showName} available!`,
+    `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`
+  );
+
   const settings = require('./settings.js');
   if (settings.getSetting('Notifications')) {
-    notifier.notify({
+    // Options for all platforms
+    let notifyOptions = {
       'title': `${torrentInfo.episodeFound} of ${torrentInfo.showName} available!`,
-      'sound': true,
-      'message': 'Click this notification to download',
-      'open': `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`
-    });
+      'message' : 'See notification view in app to download',
+      'sound': true
+    }
+    // If OSX make it open torrent on click of notification.
+    if (process.platform !== 'darwin') {
+      notifyOptions.message = 'Click this notification to download';
+      notifyOptions.open = `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`;
+      // Remove in app notification if on OSX (serves the same purpose)
+      notifications.removeNotification(appNotificationID);
+    }
+    notifier.notify(notifyOptions);
   }
   else {
-    emitMessage(`New episode of ${torrentInfo.showName} available. Notifications are turned off.`);
-    toaster.showToast('Notifications are turned off');
+    emitMessage(`New episode of ${torrentInfo.showName} available. Native notifications are turned off.`);
+    toaster.showToast('Native notifications are turned off');
   }
   // If automatic downloads are turned on, download torrent immediately
   if(settings.getSetting('Automatic Downloads')) {
@@ -147,6 +159,8 @@ function newEpisodeAlert(torrentInfo) {
     emitMessage(`New episode of ${torrentInfo.showName} available. Opening magnet link...`);
     if(shell.openExternal(`magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`)) {
       emitMessage('Magnet link was opened successfully. Check your torrent client.');
+      // Remove in app notification if show was downloaded
+      notifications.removeNotification(appNotificationID);
     }
     else {
       emitMessage('Something went wrong while opening external link.');

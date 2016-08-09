@@ -1,0 +1,133 @@
+/* Notifications Page */
+#notifications-wrapper {
+  margin: 0 10%;
+}
+
+/* Badge on sidebar with number of notifications */
+#notification-badge {
+  position: absolute;
+  color: white;
+  width: 16px;
+  top: 86px;
+  left: 36px;
+  font-size: 12px;
+  background-color: red;
+  border-radius: 50%;
+  padding: 2px;
+  display: none;
+}
+
+.notification {
+  height: 75px;
+  border-radius: 8px;
+  position: relative;
+  background-color: #EEE;
+  transition: all 400ms;
+  margin-top: 5px;
+}
+
+.notification-actions {
+  width: 100px;
+  height: 100%;
+  border-left: 1px solid grey;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  float: right;
+  transition: background-color 250ms;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.notification-actions > span {
+  height: 50%;
+  width: 100%;
+  padding-top: 8px;
+  text-align: center;
+  display: table;
+  cursor: default;
+}
+
+.notification-actions > span:first-child {
+  border-bottom: 1px solid grey;
+}
+
+.notification-actions > span:hover {
+  background-color: #CCC;
+}
+
+.notification-actions > span:first-child:hover {
+  border-top-right-radius: 8px;
+}
+
+.notification-actions > span:last-child:hover {
+  border-bottom-right-radius: 8px;
+}
+
+.notification-content > div {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+.notification-time {
+  cursor: default;
+  position: absolute;
+  font-size: 12px;
+  font-style: italic;
+  top: 5px;
+  text-align: right;
+  color: #031971;
+
+}
+
+.notification-content > div > span {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.notification > i {
+  position: absolute;
+  color: blue;
+  font-size: 35px;
+  top: 19px;
+  left: 10px;
+}
+
+.notification-content {
+  position: absolute;
+  right: 110px;
+  height: 100%;
+  left: 55px;
+}
+
+/* Top bar buttons */
+#notification-buttons {
+  text-align: center;
+  margin: 15px 0;
+}
+
+#notification-buttons > button {
+  transform: scale(1.2);
+	border: none;
+	height: 20px;
+	border-radius: 2px;
+	box-shadow: 2px 2px 2px #aaa;
+	transition: all 1s;
+}
+
+#download-all {
+  background-color: lightgreen;
+}
+
+#download-all:hover {
+  background-color: #5f6;
+}
+
+#dismiss-all {
+  background-color: #f56;
+  margin-left: 25px;
+}
+
+#dismiss-all:hover {
+  background-color: red;
+}

@@ -1,11 +1,16 @@
 'use strict';
 
- // Do not require jQuery if testing
+ // Do not require jQuery or shell if testing
  var $status;
+ var $notificationBadge;
+ var shell;
 if(!global.it) {
   const $ = jQuery = require("jquery");
   $status = $('#status');
+  $notificationBadge = $('#notification-badge');
+  shell = require('electron').shell
 }
+
 const request = require('request');
 const fs = require('fs');
 const http = require('http');
@@ -16,7 +21,6 @@ const LOCAL_TIMEZONE = moment.tz.guess();
 // Extra time before torrent checks in scheduling
 const EXTRA_HOURS = 1;
 const EXTRA_MINUTES = 10;
-
 
 const DAY_OF_WEEK = {
   "Sunday"    :   0,
@@ -50,7 +54,6 @@ function getInfo(nameOfShow, next) {
     if (!err && result.statusCode === 200) {
       t.emitMessage(`Got result for ${nameOfShow} from tvmaze API.`);
       result = JSON.parse(result.body);
-      console.log(result);
       let showInfo = {
         nameOfShow : result.name,
         airTime : result.schedule.time,
@@ -182,7 +185,7 @@ function convertTime(showTime, showTimezone, scheduler) {
   // Calculate time zone offset
   let timeNow = Date.now();
   if (showTimezone) {
-    let offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(timeNow) 
+    let offset = (moment.tz.zone(LOCAL_TIMEZONE).offset(timeNow)
       - moment.tz.zone(showTimezone).offset(timeNow)) / 60;
     timeParts[0] -= offset;
   }
@@ -231,3 +234,20 @@ function getKeyByValue(object, value) {
   return Object.keys(object).find((key) => object[key] === value);
 }
 module.exports.getKeyByValue = getKeyByValue;
+
+function updateNotificationBadge(numNotifications) {
+  $notificationBadge.text(numNotifications);
+  if (numNotifications === 0) {
+    $notificationBadge.fadeOut();
+  }
+  else {
+    $notificationBadge.fadeIn();
+  }
+}
+module.exports.updateNotificationBadge = updateNotificationBadge;
+
+function openExternalMagnet(link) {
+  console.log(`open:${link}`);
+  shell.openExternal(link);
+}
+module.exports.openExternalMagnet = openExternalMagnet;
