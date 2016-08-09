@@ -5,6 +5,11 @@
   </div>
 </div>
 <script>
+// Remove buttons if there are no notifications.
+if (notifications.getNumberOfNotifications() == 0) {
+  $('#notification-buttons').remove();
+}
+
 $(document).ready( () => {
   $('#notifications-wrapper').append(uiComp.buildNotifications());
 });
@@ -39,19 +44,22 @@ function removeNotificationFromUI(element) {
 }
 
 function downloadAll() {
-  let length = notifications.getAllNotifications().length
-  for (let index = 0; index < length; length++) {
-    notifications.startDownload(notification.id);
-    notifications.removeNotification(notification.id);
-    removeNotificationFromUI($(`[data-id="${notification.id}"]`));
+  // Loop until there are no notifications left
+  console.log(notifications.getNumberOfNotifications() > 0);
+  while (notifications.getNumberOfNotifications() > 0) {
+    let current = notifications.getAllNotifications()[0]
+    notifications.startDownload(current.id);
+    notifications.removeNotification(current.id);
+    removeNotificationFromUI($(`[data-id="${current.id}"]`));
   }
 }
 
 function dismissAll() {
-  notifications.getAllNotifications().forEach(function(notification) {
-    console.log(notification);
-    notifications.removeNotification(notification.id);
-    removeNotificationFromUI($(`[data-id="${notification.id}"]`));
-  });
+  // Loop until there are no notifications left
+  while (notifications.getNumberOfNotifications() > 0) {
+    let current = notifications.getAllNotifications()[0]
+    notifications.removeNotification(current.id);
+    removeNotificationFromUI($(`[data-id="${current.id}"]`));
+  }
 }
 </script>
