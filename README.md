@@ -2,12 +2,9 @@
 
 ###FIXES BEFORE 1.0
 <ul>
-<li>Windows users need a way to start torrent downloads when automatic downloads are turned off. Mac users can click notifications, however Windows 7 or 10 do not offer similar functionality.</li>
 <li>Need to customize menu options a bit and rename app from electron</li>
 <li>Figure out how to package as standalone app</li>
 </ul>
-
-###If you are on Windows you currently need to have Automatic Downloads setting turned on or there is no way to start the torrents.
 
 ![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.13-PM-1024x650.png)
 >Add all your favourite shows! Poster art is automatically downloaded
@@ -32,6 +29,9 @@
 
 ![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.10-PM-1024x650.png)
 >Settings and fancy notifications shown here. (New torrent notifications are native, not in-app)
+
+![alt tag](http://www.jasongodson.com/public/images/torrent-notifier/osx/Notifications.png)
+>NEW: In app torrent notification list! Now you can download them on Windows machines! If you turn off native notifications and automatic downloads, you will still see a notification here whenever a new episode is found.
 
 ![alt tag](http://www.jasongodson.com/public/images/torrent-notifier/osx/Native%20Notifications.png)
 >These are the native notifications shown on OSX
