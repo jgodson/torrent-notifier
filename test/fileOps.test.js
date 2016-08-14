@@ -1,4 +1,4 @@
-const fileOps = require('../js/fileOps');
+const fileOps = require('../js/fileOps.js');
 const assert = require('assert');
 const fs = require('fs');
 
@@ -7,12 +7,12 @@ describe('fileOps module tests', function() {
     testing : true,
     issues : false
   }
-  
+
   after(function() {
     // Remove file and directory used for testing
     fs.unlinkSync(`${process.cwd()}/data/test/test.json`);
     fs.rmdirSync(`${process.cwd()}/data/test`);
-  }); 
+  });
 
   it('should indicate that "test" directory does not exist', function() {
     assert.equal(fileOps.checkDirectory('test'), false);

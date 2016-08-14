@@ -21,6 +21,7 @@ function notificationDownload(element) {
   notifications.startDownload(downloadID);
   // Remove notification
   notifications.removeNotification(downloadID);
+  notifications.updateNotificationBadge();
   removeNotificationFromUI(element.path[2]);
 }
 
@@ -29,6 +30,7 @@ function notificationDismiss(element) {
   let removeID = element.path[2].attributes[1].nodeValue;
   // Remove notification
   notifications.removeNotification(removeID);
+  notifications.updateNotificationBadge();
   removeNotificationFromUI(element.path[2]);
 }
 
@@ -52,6 +54,7 @@ function downloadAll() {
     notifications.removeNotification(current.id);
     removeNotificationFromUI($(`[data-id="${current.id}"]`));
   }
+  notifications.updateNotificationBadge();
 }
 
 function dismissAll() {
@@ -61,5 +64,6 @@ function dismissAll() {
     notifications.removeNotification(current.id);
     removeNotificationFromUI($(`[data-id="${current.id}"]`));
   }
+  notifications.updateNotificationBadge();
 }
 </script>

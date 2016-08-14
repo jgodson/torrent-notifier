@@ -131,6 +131,7 @@ function newEpisodeAlert(torrentInfo) {
     `${torrentInfo.episodeFound} of ${torrentInfo.showName} available!`,
     `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`
   );
+  notifications.updateNotificationBadge();
 
   const settings = require('./settings.js');
   if (settings.getSetting('Notifications')) {

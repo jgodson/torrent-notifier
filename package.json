@@ -1,6 +1,6 @@
 {
   "name": "torrent-notifier",
-  "version": "0.9.3",
+  "version": "1.0.0",
   "description": "A GUI made with electron to keep track of your favourite shows.",
   "repository": {
     "type": "git",

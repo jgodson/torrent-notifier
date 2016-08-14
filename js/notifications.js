@@ -25,6 +25,7 @@ var Notification = function Notification(message, magnet) {
   </div>`
 }
 
+// Generates a unique number to use for notification id
 function generateID() {
   let unique = false;
   let id = notifications.length + 1;
@@ -39,24 +40,27 @@ function generateID() {
   return id;
 }
 
+// Creates a new notification object and adds it to the array using given
+// message and magnet link
 exports.addNotification = function addNotification(message, magnet) {
   let notification = new Notification(message, magnet);
   notifications.push(notification);
-  utils.updateNotificationBadge(notifications.length);
   return notification.id;
 }
 
+// Removes notification with given id from array. Returns true if successful
+// and false if not
 exports.removeNotification = function removeNotification(id) {
   for (var index = 0; index < notifications.length; index++) {
     if (notifications[index].id == id) {
       notifications.splice(index, 1);
-      utils.updateNotificationBadge(notifications.length);
       return true;
     }
   };
   return false;
 }
 
+// Returns a single notification with given id, or false if not found
 function getNotification(id) {
   for (var index = 0; index < notifications.length; index++) {
     if (notifications[index].id == id) {
@@ -67,10 +71,12 @@ function getNotification(id) {
 }
 exports.getNotification = getNotification;
 
+// Returns length of notification array
 exports.getNumberOfNotifications = function getNumberOfNotifications() {
   return notifications.length;
 }
 
+// Returns notification array
 exports.getAllNotifications = function getAllNotifications() {
   return notifications;
 }
@@ -80,5 +86,11 @@ exports.startDownload = function startDownload(id) {
   let current = getNotification(id);
   utils.openExternalMagnet(current.magnet);
 }
+
+// Update the badge on the notification button in the UI
+function updateNotificationBadge() {
+  utils.updateNotificationBadge(notifications.length);
+}
+exports.updateNotificationBadge = updateNotificationBadge;
 
 module.exports = exports;

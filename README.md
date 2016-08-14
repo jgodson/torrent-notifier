@@ -1,42 +1,47 @@
-#This App is still under construction.
+<h3>This desktop app, created with electron, allows you to add your favourite shows. After which, you are able to keep track of your show dates on a calendar, have the latest episodes of your shows downloaded automatically after airing, or be notified of when they are available to download.</h3>
+<h5>I have tested on Mac OSX 10.11.6 as well as Windows 7 and 10</h3>
 
-###FIXES BEFORE 1.0
-<ul>
-<li>Need to customize menu options a bit and rename app from electron</li>
-<li>Figure out how to package as standalone app</li>
-</ul>
+<h6>How to get this desktop app on your computer:</h6>
+<ol>
+<li>Clone this repository on your computer</li>
+<li>Run <code>npm install</code>
+<li>Run <code>npm start</code>
+</ol>
 
-![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.13-PM-1024x650.png)
->Add all your favourite shows! Poster art is automatically downloaded
+<h4 style='color: blue;'>NOTE: This is a personal project created demo purposes.</h4>
+<h5 style='color: orangered;'>The torrentproject.se API seems to have issues quite often and goes down. If you get API request failed errors this is the most likely cause. Just wait for awhile and try again, or try looking for it manually and update your list of shows to look for the latest episode for when it does come back.</h3>
 
-![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.20-PM-1024x650.png)
->Hover over a show to show the options.
+<img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.13-PM-1024x650.png' />
+Add all your favourite shows! Poster art is automatically downloaded
 
-![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.17.04-PM-1024x650.png)
->New/Edit show dialog. Attempts auto population of fields and download of poster art after filling in Show Name. This uses the tvmaze API http://www.tvmaze.com/api
+<img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.20-PM-1024x650.png' />
+Hover over a show to show the options.
 
-![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.17.57-PM-1024x650.png)
->Dropdown menu for selecting timezone and air day
+<img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.17.04-PM-1024x650.png' />
+New/Edit show dialog. Attempts auto population of fields and download of poster art after filling in Show Name. This uses the tvmaze API http://www.tvmaze.com/api
 
-![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.13.19-PM-1024x650.png)
->Logs for info and debugging. You can see the automatically scheduled checks here (App needs to stay running for checks to run)
+<img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.17.57-PM-1024x650.png' />
+Dropdown menu for selecting timezone and air day
 
-![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.00-PM-1024x650.png)
->Calendar view shows you the actual air day and time of your shows.
+<img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.13.19-PM-1024x650.png' />
+Logs for info and debugging. You can see the automatically scheduled checks here (App needs to stay running for checks to run)
 
-![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.50.46-PM-1024x650.png)
->Manual checking for torrents. Next episode to look for is automatically adjusted when current episode is found. If you are behind, it should find the past few episodes.
+<img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.00-PM-1024x650.png' />
+Calendar view shows you the actual air day and time of your shows.
 
-![alt tag](http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.10-PM-1024x650.png)
->Settings and fancy notifications shown here. (New torrent notifications are native, not in-app)
+<img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.50.46-PM-1024x650.png' />
+Manual checking for torrents. Next episode to look for is automatically adjusted when current episode is found. If you are behind, it should find the past few episodes.
 
-![alt tag](http://www.jasongodson.com/public/images/torrent-notifier/osx/Notifications.png)
->NEW: In app torrent notification list! Now you can download them on Windows machines! If you turn off native notifications and automatic downloads, you will still see a notification here whenever a new episode is found.
+<img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-5.14.10-PM-1024x650.png'>
+Settings and fancy notifications shown here. (New torrent notifications are native, not in-app)
 
-![alt tag](http://www.jasongodson.com/public/images/torrent-notifier/osx/Native%20Notifications.png)
->These are the native notifications shown on OSX
+<img src='http://www.jasongodson.com/public/images/torrent-notifier/osx/Notifications.png' />
+NEW: In app torrent notification list! Now you can download them on Windows machines! If you turn off native notifications and automatic downloads, you will still see a notification here whenever a new episode is found.
 
-###Settings Descriptions:
+<img style='height: 500px; display: block; margin: auto;'src='http://www.jasongodson.com/public/images/torrent-notifier/osx/Native%20Notifications.png' />
+These are the native notifications shown on OSX
+
+<h3>Settings Descriptions:</h3>
 **Tray Icon**: Show tray icon or not. (Really does nothing at the moment, besides a reminder that app is running)
 
 **Notifications**: Native notifications of new show available
@@ -48,7 +53,7 @@
 **Check For Torrents**: This enables or disables automatic checking for torrents after new show should be available.
 
 
-###This project uses the following API's
+<h3>This project uses the following API's</h3>
 http://www.tvmaze.com/api
 
 https://torrentproject.se/api
