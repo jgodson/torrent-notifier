@@ -47,7 +47,6 @@ function removeNotificationFromUI(element) {
 
 function downloadAll() {
   // Loop until there are no notifications left
-  console.log(notifications.getNumberOfNotifications() > 0);
   while (notifications.getNumberOfNotifications() > 0) {
     let current = notifications.getAllNotifications()[0]
     notifications.startDownload(current.id);

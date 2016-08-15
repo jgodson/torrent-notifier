@@ -9,11 +9,11 @@ if (!global.it) {
 }
 
 const fs = require('fs');
-const request = require('request');
 const EventEmitter = require('events');
 const notifier = require('node-notifier');
 const fileOps = require('./fileOps.js');
 const toaster = require('./toaster.js');
+const extratorrent = require('extratorrentapi');
 
 // Create a new EventEmitter
 const torrentAlerter = new EventEmitter();
@@ -54,8 +54,6 @@ function parseData(data, currentShow) {
       so that if user is a few episodes behind, it should find them all
     */
     for(let i = 1 ; i < Object.keys(data).length ; i++) {
-      console.log(data[i].title);
-
       // If a new episode was found, update the search terms and search the list again
       if (newEpisodeFound) {
         searchTerms = [showList[currentShow].nextEpisode];
@@ -95,7 +93,6 @@ function parseData(data, currentShow) {
 // Triggered to log given message to GUI console
 torrentAlerter.on('message', function(message) {
   $('#console').append(`<p>${new Date().toString()} - ${message}</p>`);
-  console.log(message);
 });
 
 // Check API for given show name
@@ -104,23 +101,21 @@ exports.checkForNewEpisode = function checkForNewEpisode(show, type, next) {
   if (settings.getSetting('Check For Torrents') || type === 'manual') {
     emitMessage(`Searching for new episodes of ${show}...`);
     // Make request to torrent API
-    request(`https://torrentproject.se/?s=${encodeURIComponent(show)}&out=json&orderby=latest&num=50`, function(err, result) {
-      // Trigger event to deal with data from API call if request was OK
-      if (!err && result.statusCode === 200) {
-        next(parseData(JSON.parse(result.body), show));
-      }
-      else {
-        // If error log to UI console that request was not successful
+    extratorrent.search(show)
+      .then(function(torrents) {
+        next(parseData(torrents, show));
+      })
+      .catch(function(error) {
+        // If error, log to UI console that request was not successful
         emitMessage(`Request to API for ${show} was unsuccessful.`);
-        toaster.showToast(`Request to API for ${show} was unsuccessful. Check the show name.`);
+        toaster.showToast(`Request to API for ${show} was unsuccessful.`);
         next(false);
-      }
-    });
+      });
   }
   else {
     emitMessage('Torrent checks are turned off');
     toaster.showToast('Torrent checks are turned off');
-    next(true); // Return true so that interval checks arent started
+    next(true); // Return true so that interval checks aren't started
   }
 }
 
@@ -129,9 +124,8 @@ function newEpisodeAlert(torrentInfo) {
   // Add to in app notification view
   let appNotificationID = notifications.addNotification(
     `${torrentInfo.episodeFound} of ${torrentInfo.showName} available!`,
-    `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`
+    `magnet:?xt=urn:btih:${torrentInfo.hash}`
   );
-  notifications.updateNotificationBadge();
 
   const settings = require('./settings.js');
   if (settings.getSetting('Notifications')) {
@@ -142,11 +136,11 @@ function newEpisodeAlert(torrentInfo) {
       'sound': true
     }
     // If OSX make it open torrent on click of notification.
-    if (process.platform !== 'darwin') {
+    if (process.platform === 'darwin') {
       notifyOptions.message = 'Click this notification to download';
-      notifyOptions.open = `magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`;
+      notifyOptions.open = `magnet:?xt=urn:btih:${torrentInfo.hash}`;
       // Remove in app notification if on OSX (serves the same purpose)
-      notifications.removeNotification(appNotificationID);
+      // notifications.removeNotification(appNotificationID);
     }
     notifier.notify(notifyOptions);
   }
@@ -158,7 +152,7 @@ function newEpisodeAlert(torrentInfo) {
   if(settings.getSetting('Automatic Downloads')) {
     emitMessage('Automatic downloads are turned on.');
     emitMessage(`New episode of ${torrentInfo.showName} available. Opening magnet link...`);
-    if(shell.openExternal(`magnet:?xt=urn:btih:${torrentInfo.torrent_hash}`)) {
+    if(shell.openExternal(`magnet:?xt=urn:btih:${torrentInfo.hash}`)) {
       emitMessage('Magnet link was opened successfully. Check your torrent client.');
       // Remove in app notification if show was downloaded
       notifications.removeNotification(appNotificationID);
@@ -167,6 +161,7 @@ function newEpisodeAlert(torrentInfo) {
       emitMessage('Something went wrong while opening external link.');
     }
   }
+  notifications.updateNotificationBadge();
 }
 
 // Increments episode by one. Given in format: S##E##

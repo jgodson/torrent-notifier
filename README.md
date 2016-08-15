@@ -8,8 +8,7 @@
 <li>Run <code>npm start</code>
 </ol>
 
-<h4 style='color: blue;'>NOTE: This is a personal project created demo purposes.</h4>
-<h5 style='color: orangered;'>The torrentproject.se API seems to have issues quite often and goes down. If you get API request failed errors this is the most likely cause. Just wait for awhile and try again, or try looking for it manually and update your list of shows to look for the latest episode for when it does come back.</h3>
+<h4>NOTE: This is a personal project created demo purposes.</h4>
 
 <img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.13-PM-1024x650.png' />
 Add all your favourite shows! Poster art is automatically downloaded
@@ -38,7 +37,7 @@ Settings and fancy notifications shown here. (New torrent notifications are nati
 <img src='http://www.jasongodson.com/public/images/torrent-notifier/osx/Notifications.png' />
 NEW: In app torrent notification list! Now you can download them on Windows machines! If you turn off native notifications and automatic downloads, you will still see a notification here whenever a new episode is found.
 
-<img style='height: 500px; display: block; margin: auto;'src='http://www.jasongodson.com/public/images/torrent-notifier/osx/Native%20Notifications.png' />
+<img src='http://www.jasongodson.com/public/images/torrent-notifier/osx/Native%20Notifications.png' />
 These are the native notifications shown on OSX
 
 <h3>Settings Descriptions:</h3>
@@ -55,5 +54,3 @@ These are the native notifications shown on OSX
 
 <h3>This project uses the following API's</h3>
 http://www.tvmaze.com/api
-
-https://torrentproject.se/api

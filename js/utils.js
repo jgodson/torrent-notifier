@@ -247,7 +247,6 @@ function updateNotificationBadge(numNotifications) {
 module.exports.updateNotificationBadge = updateNotificationBadge;
 
 function openExternalMagnet(link) {
-  console.log(`open:${link}`);
   shell.openExternal(link);
 }
 module.exports.openExternalMagnet = openExternalMagnet;

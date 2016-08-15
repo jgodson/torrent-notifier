@@ -4,12 +4,12 @@ const app = electron.app;
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow;
 
-// In case I forget to comment out or remove when commiting
+// So that if it's not commented out app will still load without it
 try {
   //require('electron-reload')(__dirname);
 }
 catch (e) {
-  console.log('Electron-Reload Error. Possibly not in Dev');
+  console.log('electron-reload not found');
 }
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -22,7 +22,7 @@ function createWindow () {
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/views/index.html`);
-  
+
   // Set Up tray icon
   require('./js/tray-icon.js');
 
