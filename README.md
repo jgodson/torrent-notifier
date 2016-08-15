@@ -8,7 +8,7 @@
 <li>Run <code>npm start</code>
 </ol>
 
-<h4>NOTE: This is a personal project created demo purposes.</h4>
+<h4>NOTE: This is a personal project created for demo purposes.</h4>
 
 <img src='http://jasongodson.com/blog/wp-content/uploads/2016/07/Screen-Shot-2016-07-23-at-9.48.13-PM-1024x650.png' />
 Add all your favourite shows! Poster art is automatically downloaded
