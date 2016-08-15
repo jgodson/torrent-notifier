@@ -23,4 +23,8 @@ describe('utils module tests', function() {
       assert.equal(utils.convert12HrTime('00:09'), '12:09 AM');
     });
   });
+
+  describe('changeDay function', function() {
+    
+  });
 });

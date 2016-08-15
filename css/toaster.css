@@ -1,0 +1,65 @@
+/* Toast Notifications */
+#toaster {
+  width: 350px;
+  height: 75px;
+  border-radius: 8px;
+  position: fixed;
+  top: 50px;
+  right: -360px;
+  background-color: #EEE;
+  z-index: 2002;
+  transition: all 400ms;
+}
+
+#toaster.shown {
+  right: 5px;
+}
+
+#toaster > div + div {
+  width: 75px;
+  height: 100%;
+  border-left: 1px solid grey;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  float: right;
+  transition: background-color 250ms;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  cursor: default;
+}
+
+#toaster > div + div:hover {
+  background-color: #CCC;
+}
+
+#toaster > div > span {
+  position: relative;
+  left: 15px;
+  top: 25px;
+}
+
+#toaster-content > div {
+  display: table;
+  height: 100%;
+  width: 100%;
+}
+
+#toaster-content > div > span {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+#toaster > i {
+  position: absolute;
+  color: blue;
+  font-size: 35px;
+  top: 19px;
+  left: 10px;
+}
+
+#toaster-content {
+  position: absolute;
+  right: 85px;
+  height: 100%;
+  left: 50px;
+}

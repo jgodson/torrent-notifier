@@ -1,0 +1,91 @@
+/* Top Bar */
+#top-bar {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e5e5e5;
+  height: 40px;
+  position: fixed;
+  font-size: 150%;
+  left: 71px;
+  top: 0;
+  right: 0;
+  z-index: 1001;
+  min-width: 400px;
+}
+
+#title {
+  text-align: center;
+  position: relative;
+}
+
+#title > span {
+  position: relative;
+  top: 6px;
+  cursor: default;
+}
+
+#connection-info {
+  width: 80px;
+  height: 40px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#top-bar i {
+   color: darkgrey;
+   top: 8px;
+   right: 15px;
+   position: absolute;
+}
+
+#top-bar > div > div > i.fa-wifi {
+  position: absolute;
+  right: 40px;
+}
+
+.spinning {
+  animation: spin 2s ease-out infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.ok {
+  color: green !important;
+}
+
+.error {
+  color: darkred !important;
+}
+
+#connection {
+  z-index: 1000;
+  display: none;
+  position: absolute;
+  top: 40px;
+  right: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  height: 201px;
+  width: 300px;
+  background-color: #f5f5f5;
+}
+
+#connection span {
+  position: absolute;
+  top: 15px;
+  left: 80px;
+}
+
+#connection i {
+  position: relative;
+  top: 50px;
+  left: 100px;
+  font-size: 800%;
+}

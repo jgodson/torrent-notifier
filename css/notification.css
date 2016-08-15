@@ -105,11 +105,11 @@
 
 #notification-buttons > button {
   transform: scale(1.2);
-	border: none;
-	height: 20px;
-	border-radius: 2px;
-	box-shadow: 2px 2px 2px #aaa;
-	transition: all 1s;
+  border: none;
+  height: 20px;
+  border-radius: 2px;
+  box-shadow: 2px 2px 2px #aaa;
+  transition: all 1s;
   outline: none;
 }
 

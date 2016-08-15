@@ -1,0 +1,51 @@
+/* Left Side Navigation */
+#side-nav {
+  text-align: center;
+  background-color: #000;
+  width: 71px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 1000;
+}
+
+#side-nav #battery {
+  position: fixed;
+  bottom: 0px;
+  left: 10px;
+  color: #555;
+}
+
+#side-nav #battery i {
+  position: relative;
+  font-size: 2.5rem;
+}
+
+#side-nav #battery div {
+  color: oldlace;
+  font-size: 14px;
+  right: 0px;
+  font-weight: 800;
+  bottom: 29px;
+  position: relative;
+  cursor: default;
+}
+
+#side-nav ul {
+  list-style: none;
+  padding: 19px;
+  margin: 0
+}
+
+#side-nav li {
+  padding-bottom: 8px;
+}
+
+#side-nav a {
+  font-size: 2rem;
+  color: #555
+}
+
+#side-nav a:hover {
+  color: #5f6;
+}

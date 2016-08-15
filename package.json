@@ -30,6 +30,7 @@
     "mocha": "^3.0.0"
   },
   "dependencies": {
+    "extratorrentapi": "^1.1.0",
     "jquery": "^3.0.0",
     "moment": "^2.14.1",
     "moment-timezone": "^0.5.4",
