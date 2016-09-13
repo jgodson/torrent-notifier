@@ -38,6 +38,7 @@ Settings and fancy notifications shown here. (New torrent notifications are nati
 NEW: In app torrent notification list! Now you can download them on Windows machines! If you turn off native notifications and automatic downloads, you will still see a notification here whenever a new episode is found.
 
 <img src='http://www.jasongodson.com/public/images/torrent-notifier/osx/Native%20Notifications.png' />
+
 These are the native notifications shown on OSX
 
 <h3>Settings Descriptions:</h3>
